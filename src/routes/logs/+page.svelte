@@ -117,7 +117,7 @@
 	<h1 class="text-2xl font-bold text-gray-900 text-start w-full">Realtime logs</h1>
 
 	<div class="flex flex-col items-start justify-start w-full overflow-auto">
-		<!-- <div
+		<div
 			class="flex flex-row w-auto mt-3 items-start justify-start gap-3 py-3 bg-gray-50 px-3 rounded-lg"
 		>
 			{#each menu as item}
@@ -127,7 +127,7 @@
 					{item.name}
 				</div>
 			{/each}
-		</div> -->
+		</div>
 
 		{#if state.records.length === 0}
 			<p>No records found</p>
