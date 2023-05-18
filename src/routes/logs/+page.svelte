@@ -12,6 +12,13 @@
 		fields: []
 	};
 
+	// total cart items
+	let totalCartItems = 0;
+
+	$: totalCartItems = state.records.reduce((acc: any, curr: any) => {
+		return acc + curr.quantity;
+	}, 0);
+
 	onMount(async () => {
 		// init dozer client
 		const client = new ApiClient('cart');
@@ -116,6 +123,7 @@
 <div class="flex flex-col w-full items-center justify-center">
 	<h1 class="text-2xl font-bold text-gray-900 text-start w-full">Realtime logs</h1>
 
+	<h1>Cart: {totalCartItems}</h1>
 	<div class="flex flex-col items-start justify-start w-full overflow-auto">
 		<div
 			class="flex flex-row w-auto mt-3 items-start justify-start gap-3 py-3 bg-gray-50 px-3 rounded-lg"
