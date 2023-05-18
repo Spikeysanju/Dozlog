@@ -28,11 +28,7 @@
 			<p class="relative text-lg font-semibold text-white">${price}</p>
 		</div>
 	</div>
-	<div class="mt-6" on:click>
-		<a
-			href="#"
-			class="relative flex items-center justify-center rounded-md border border-transparent bg-gray-100 px-8 py-2 text-sm font-medium text-gray-900 hover:bg-gray-200"
-			>Add to bag<span class="sr-only">, Zip Tote Basket</span></a
-		>
+	<div class="mt-6">
+		<slot />
 	</div>
 </div>

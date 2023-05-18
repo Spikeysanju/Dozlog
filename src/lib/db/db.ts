@@ -58,7 +58,7 @@ export interface Cart {
 	userId: string;
 	productId: string;
 	quantity: number;
-	createdAt: Generated<Timestamp>;
+	createdAt: Timestamp;
 	updatedAt: Timestamp;
 }
 
