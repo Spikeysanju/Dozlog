@@ -3,6 +3,8 @@
 	import { ApiClient } from '@dozerjs/dozer';
 	import { RecordMapper } from '@dozerjs/dozer/lib/cjs/helper';
 	import { OperationType } from '@dozerjs/dozer/lib/cjs/generated/protos/types_pb.js';
+	import NewUserCard from '$lib/components/NewUserCard.svelte';
+	import { className, clsx } from '$lib/utils/utils';
 
 	let results: any = null;
 	let records: any = [];
@@ -12,12 +14,46 @@
 		fields: []
 	};
 
+	let userState: any = {
+		records: [],
+		fields: []
+	};
+
+	let cartState: any = {
+		records: [],
+		fields: []
+	};
+
+	let wishlistState: any = {
+		records: [],
+		fields: []
+	};
+
+	let ordersState: any = {
+		records: [],
+		fields: []
+	};
+
+	let activeTab = 'users';
+	let endpoint = 'user';
+
+	// when active tab is changed if users then endpoint is user else if it's cart then endpoint is cart else if it's orders then endpoint is orders
+	$: endpoint = activeTab === 'users' ? 'profile' : activeTab === 'cart' ? 'cart' : 'orders';
+
 	// total cart items
 	let totalCartItems = 0;
 
-	$: totalCartItems = state.records.reduce((acc: any, curr: any) => {
-		return acc + curr.quantity;
-	}, 0);
+	const menu = [
+		{
+			name: 'Users'
+		},
+		{
+			name: 'Cart'
+		},
+		{
+			name: 'Orders'
+		}
+	];
 
 	onMount(async () => {
 		// init dozer client
@@ -93,55 +129,177 @@
 			});
 		});
 	});
-	const menu = [
-		{
-			name: 'New users'
-		},
-		{
-			name: 'Cart'
-		},
-		{
-			name: 'Wishlist'
-		},
-		{
-			name: 'Orders'
-		},
-		{
-			name: 'Logs'
-		},
-		{
-			name: 'Reviews'
-		},
-		{
-			name: 'Sessions'
-		}
-	];
+
+	onMount(async () => {
+		// init dozer client
+		const client = new ApiClient('profile');
+		client.query().then(([fields, records]) => {
+			console.log('fields', JSON.stringify(fields, null, 2));
+			console.log('records', JSON.stringify(records, null, 2));
+
+			userState.records = records;
+			userState.fields = fields;
+		});
+
+		client.getFields().then((fieldsResponse) => {
+			let fields = fieldsResponse.getFieldsList();
+			let mapper = new RecordMapper(fieldsResponse.getFieldsList());
+			let primaryIndexList = fieldsResponse.getPrimaryIndexList();
+			let primaryIndexKeys = primaryIndexList.map((index) => fields[index].getName());
+
+			console.info('fields', fields);
+			console.info('primary index keys', primaryIndexKeys);
+			console.log('primary index list', primaryIndexList);
+			console.info('mapper', mapper);
+
+			let stream = client.onEvent();
+			stream.on('data', (response) => {
+				if (response.getTyp() === OperationType.UPDATE) {
+					let oldValue = mapper.mapRecord(response?.getOld()?.getValuesList()!);
+					let records = userState.records;
+					let existingIndex = records.findIndex((v: { [x: string]: any }) =>
+						primaryIndexKeys.every((k) => v[k] === oldValue[k])
+					);
+
+					if (existingIndex > -1) {
+						records[existingIndex] = mapper.mapRecord(response?.getNew()?.getValuesList()!);
+						userState.records = records;
+					}
+				}
+
+				// insert event
+				if (response.getTyp() === OperationType.INSERT) {
+					let record = mapper.mapRecord(response?.getNew()?.getValuesList()!);
+					userState.records = [record, ...userState.records];
+				}
+
+				// delete event
+				if (response.getTyp() === OperationType.DELETE) {
+					let record = mapper.mapRecord(response?.getNew()?.getValuesList()!);
+					let records = userState.records;
+					let existingIndex = records.findIndex((v: { [x: string]: any }) =>
+						primaryIndexKeys.every((k) => v[k] === record[k])
+					);
+
+					if (existingIndex > -1) {
+						records.splice(existingIndex, 1);
+						userState.records = records;
+					}
+				}
+			});
+		});
+	});
+
+	onMount(async () => {
+		// init dozer client
+		const client = new ApiClient('order');
+		client.query().then(([fields, records]) => {
+			console.log('fields', JSON.stringify(fields, null, 2));
+			console.log('records', JSON.stringify(records, null, 2));
+
+			ordersState.records = records;
+			ordersState.fields = fields;
+		});
+
+		client.getFields().then((fieldsResponse) => {
+			let fields = fieldsResponse.getFieldsList();
+			let mapper = new RecordMapper(fieldsResponse.getFieldsList());
+			let primaryIndexList = fieldsResponse.getPrimaryIndexList();
+			let primaryIndexKeys = primaryIndexList.map((index) => fields[index].getName());
+
+			let stream = client.onEvent();
+			stream.on('data', (response) => {
+				if (response.getTyp() === OperationType.UPDATE) {
+					let oldValue = mapper.mapRecord(response?.getOld()?.getValuesList()!);
+					let records = ordersState.records;
+					let existingIndex = records.findIndex((v: { [x: string]: any }) =>
+						primaryIndexKeys.every((k) => v[k] === oldValue[k])
+					);
+
+					if (existingIndex > -1) {
+						records[existingIndex] = mapper.mapRecord(response?.getNew()?.getValuesList()!);
+						ordersState.records = records;
+					}
+				}
+
+				// insert event
+				if (response.getTyp() === OperationType.INSERT) {
+					let record = mapper.mapRecord(response?.getNew()?.getValuesList()!);
+					ordersState.records = [record, ...ordersState.records];
+				}
+
+				// delete event
+				if (response.getTyp() === OperationType.DELETE) {
+					let record = mapper.mapRecord(response?.getNew()?.getValuesList()!);
+					let records = ordersState.records;
+					let existingIndex = records.findIndex((v: { [x: string]: any }) =>
+						primaryIndexKeys.every((k) => v[k] === record[k])
+					);
+
+					if (existingIndex > -1) {
+						records.splice(existingIndex, 1);
+						ordersState.records = records;
+					}
+				}
+			});
+		});
+	});
 </script>
 
 <div class="flex flex-col w-full items-center justify-center">
 	<h1 class="text-2xl font-bold text-gray-900 text-start w-full">Realtime logs</h1>
-
-	<h1>Cart: {totalCartItems}</h1>
 	<div class="flex flex-col items-start justify-start w-full overflow-auto">
 		<div
-			class="flex flex-row w-auto mt-3 items-start justify-start gap-3 py-3 bg-gray-50 px-3 rounded-lg"
+			class="flex flex-row w-auto mt-3 items-start justify-start gap-3 py-2 bg-gray-50 px-3 rounded-lg"
 		>
 			{#each menu as item}
+				<!-- svelte-ignore a11y-click-events-have-key-events -->
 				<div
-					class="bg-white px-3 w-fit text-center py-2 rounded-md hover:cursor-pointer hover:bg-white shadow-sm hover:shadow-md"
+					on:click={() => (activeTab = item.name.toLowerCase())}
+					class={className(
+						'px-3 w-fit text-sm text-center py-1 rounded-md hover:cursor-pointer hover:bg-white shadow-sm hover:shadow-md',
+						activeTab === item.name.toLowerCase() ? 'bg-white shadow-md' : 'bg-gray-50 shadow-none'
+					)}
 				>
 					{item.name}
 				</div>
 			{/each}
 		</div>
 
-		{#if state.records.length === 0}
-			<p>No records found</p>
-		{:else}
-			{#each state.records as item}
-				<h1>Card Id: {item.id}</h1>
-				<p>Quantity: {item.quantity}</p>
-			{/each}
+		{#if activeTab === 'cart'}
+			{#if state.records.length === 0}
+				<p>No cart items found</p>
+			{:else}
+				{#each state.records as item}
+					<h1>Card Id: {item.id}</h1>
+					<p>Quantity: {item.userId}</p>
+				{/each}
+			{/if}
+		{:else if activeTab === 'users'}
+			{#if userState.records.length === 0}
+				<p>No users record found</p>
+			{:else}
+				<div class="mt-6 w-full flex">
+					{#each userState.records as item}
+						<NewUserCard
+							username={item.name}
+							email={item.email}
+							userId={item.id}
+							timestamp={'12th june'}
+						/>
+					{/each}
+				</div>
+			{/if}
+		{:else if activeTab === 'orders'}
+			{#if ordersState.records.length === 0}
+				<p>No orders found</p>
+			{:else}
+				<div class="mt-6 w-full flex">
+					{#each ordersState.records as item}
+						<h1>Order id: {item.id}</h1>
+					{/each}
+				</div>
+			{/if}
 		{/if}
 	</div>
 </div>

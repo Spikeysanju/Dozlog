@@ -23,3 +23,7 @@ export const clsx = (className: string) => {
 export function formatNumericValue(price: any): string {
 	return price.toFixed(2).toString();
 }
+
+export function className(...classes: any[]): string {
+	return classes.filter(Boolean).join(' ');
+}
