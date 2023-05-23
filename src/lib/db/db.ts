@@ -62,6 +62,17 @@ export interface Cart {
 	updatedAt: Timestamp;
 }
 
+// create orders with multiple product ids and quantities and a total price and a user id
+export interface Order {
+	id: Generated<string>;
+	userId: string;
+	productId: any;
+	quantity: number;
+	totalPrice: number;
+	createdAt: Timestamp;
+	updatedAt: Timestamp;
+}
+
 export interface Database {
 	product: Product;
 	cart: Cart;
@@ -69,6 +80,7 @@ export interface Database {
 	account: Account;
 	session: Session;
 	verificationToken: VerificationToken;
+	order: Order;
 }
 
 // You'd create one of these when you start your app.

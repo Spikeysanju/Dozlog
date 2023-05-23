@@ -66,7 +66,7 @@ export const actions = {
 				userId: user.id,
 				createdAt: new Date().toDateString(),
 				updatedAt: new Date().toDateString(),
-				id: nanoid(23)
+				id: nanoid(12)
 			})
 			.returning('id')
 			.executeTakeFirstOrThrow();

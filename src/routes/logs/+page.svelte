@@ -116,8 +116,6 @@
 			name: 'Sessions'
 		}
 	];
-
-	export let data;
 </script>
 
 <div class="flex flex-col w-full items-center justify-center">

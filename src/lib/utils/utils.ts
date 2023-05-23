@@ -19,3 +19,7 @@ export const clsx = (className: string) => {
 		.filter(Boolean)
 		.join(' ');
 };
+
+export function formatNumericValue(price: any): string {
+	return price.toFixed(2).toString();
+}
