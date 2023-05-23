@@ -5,7 +5,9 @@
 	export let timestamp: string;
 </script>
 
-<div class="flex flex-row w-full h-fit items-start justify-start space-x-3 max-w-lg">
+<div
+	class="flex flex-row w-full h-fit items-start justify-start space-x-3 max-w-lg p-6 border border-r-gray-100 rounded-md"
+>
 	<div class="flex flex-row items-center justify-center">
 		<img
 			src={`https://avatar.vercel.sh/${username}?size=30`}
@@ -21,7 +23,7 @@
 		</div>
 
 		<div class="flex flex-row items-center justify-between w-full text-gray-500 text-sm">
-			<p>#{userId}</p>
+			<p class="text-500 text-sm text-start">User Id:{userId}</p>
 			<p>{timestamp}</p>
 		</div>
 	</div>

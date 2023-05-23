@@ -4,7 +4,10 @@
 	import { RecordMapper } from '@dozerjs/dozer/lib/cjs/helper';
 	import { OperationType } from '@dozerjs/dozer/lib/cjs/generated/protos/types_pb.js';
 	import NewUserCard from '$lib/components/NewUserCard.svelte';
-	import { className, clsx } from '$lib/utils/utils';
+	import { className, clsx, convertISOTimestamp } from '$lib/utils/utils';
+	import NewOrderCard from '$lib/components/NewOrderCard.svelte';
+	import OrderProductCard from '$lib/components/OrderProductCard.svelte';
+	import NewCartCard from '$lib/components/NewCartCard.svelte';
 
 	let results: any = null;
 	let records: any = [];
@@ -257,8 +260,8 @@
 				<div
 					on:click={() => (activeTab = item.name.toLowerCase())}
 					class={className(
-						'px-3 w-fit text-sm text-center py-1 rounded-md hover:cursor-pointer hover:bg-white shadow-sm hover:shadow-md',
-						activeTab === item.name.toLowerCase() ? 'bg-white shadow-md' : 'bg-gray-50 shadow-none'
+						'px-3 w-fit text-sm text-center py-1 rounded-md hover:cursor-pointer hover:bg-white hover:shadow-sm',
+						activeTab === item.name.toLowerCase() ? 'bg-white shadow-sm' : 'bg-gray-50 shadow-none'
 					)}
 				>
 					{item.name}
@@ -271,8 +274,13 @@
 				<p>No cart items found</p>
 			{:else}
 				{#each state.records as item}
-					<h1>Card Id: {item.id}</h1>
-					<p>Quantity: {item.userId}</p>
+					<NewCartCard
+						cartId={item.id}
+						productId={item.productId}
+						quantity={item.quantity}
+						orderedBy={item.userId}
+						timestamp={item.createdAt}
+					/>
 				{/each}
 			{/if}
 		{:else if activeTab === 'users'}
@@ -294,9 +302,15 @@
 			{#if ordersState.records.length === 0}
 				<p>No orders found</p>
 			{:else}
-				<div class="mt-6 w-full flex">
+				<div class="mt-6 w-full flex flex-col gap-6">
 					{#each ordersState.records as item}
-						<h1>Order id: {item.id}</h1>
+						<NewOrderCard
+							orderId={item.id}
+							orderDate={item.createdAt}
+							orderTotal={item.totalPrice}
+							orderQuantity={item.quantity}
+							orderedBy={item.userId}
+						/>
 					{/each}
 				</div>
 			{/if}

@@ -248,23 +248,27 @@
 			id="cart-items"
 			class="flex flex-col col-span-2 sm:col-span-1 w-full items-center justify-center gap-3 max-w-2xl"
 		>
-			{#each allCartItems as item}
-				<ProductCard
-					title={item.name}
-					description={item.description}
-					price={item.price}
-					image={item.image}
-					type="cart"
-					quantity={item.quantity}
-				>
-					<form id="remove-product-from-cart" method="POST" use:enhance>
-						<input hidden type="text" name="id" value={item.cartId} />
-						<button type="submit" formaction="?/removeFromCart" class="text-gray-900 text-sm"
-							>Remove
-						</button>
-					</form>
-				</ProductCard>
-			{/each}
+			{#if allCartItems.length === 0}
+				<p class="text-gray-900 text-sm">No items in cart</p>
+			{:else}
+				{#each allCartItems as item}
+					<ProductCard
+						title={item.name}
+						description={item.description}
+						price={item.price}
+						image={item.image}
+						type="cart"
+						quantity={item.quantity}
+					>
+						<form id="remove-product-from-cart" method="POST" use:enhance>
+							<input hidden type="text" name="id" value={item.cartId} />
+							<button type="submit" formaction="?/removeFromCart" class="text-gray-900 text-sm"
+								>Remove
+							</button>
+						</form>
+					</ProductCard>
+				{/each}
+			{/if}
 		</div>
 
 		{#if subtotalPrice > 0}
