@@ -4,6 +4,7 @@
 	import { ApiClient } from '@dozerjs/dozer';
 	import { RecordMapper } from '@dozerjs/dozer/lib/cjs/helper';
 	import { OperationType } from '@dozerjs/dozer/lib/esm/generated/protos/types_pb.js';
+	import type { DozerFilter } from '@dozerjs/dozer/lib/esm/query_helper.js';
 	import { onMount } from 'svelte';
 
 	let results: any = null;
@@ -15,14 +16,23 @@
 	};
 
 	onMount(async () => {
+		const filter: DozerFilter = {
+			name: {
+				$eq: 'Product 1'
+			}
+		};
 		const productClient = new ApiClient('product');
-		productClient.query().then(([fields, records]) => {
-			console.log('fields', JSON.stringify(fields, null, 2));
-			console.log('records', JSON.stringify(records, null, 2));
+		productClient
+			.query({
+				filter: filter
+			})
+			.then(([fields, records]) => {
+				console.log('fields', JSON.stringify(fields, null, 2));
+				console.log('records', JSON.stringify(records, null, 2));
 
-			productState.records = records;
-			productState.fields = fields;
-		});
+				productState.records = records;
+				productState.fields = fields;
+			});
 
 		// init dozer client
 		productClient.getFields().then((fieldsResponse) => {
@@ -78,7 +88,7 @@
 	<h2 class="text-xl font-bold text-gray-900 py-3">Recommeded Products</h2>
 
 	<div class="mt-8 grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
-		{#each data.products as item}
+		{#each productState.records as item}
 			<ProductCard
 				title={item.name}
 				description={item.description}
@@ -87,7 +97,7 @@
 				type="product"
 				quantity={1}
 			>
-				<form id="add-to-cart-form" method="POST" >
+				<form id="add-to-cart-form" method="POST">
 					<input hidden type="text" name="productId" value={item.id} />
 					<input hidden type="text" name="quantity" value="1" />
 					<button

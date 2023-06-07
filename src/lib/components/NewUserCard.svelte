@@ -6,7 +6,7 @@
 </script>
 
 <div
-	class="flex flex-row w-full h-fit items-start justify-start space-x-3 max-w-lg p-6 border border-r-gray-100 rounded-md"
+	class="flex flex-row bg-white w-full h-fit items-start justify-start space-x-3 max-w-lg p-6 border border-r-gray-100 rounded-md"
 >
 	<div class="flex flex-row items-center justify-center">
 		<img

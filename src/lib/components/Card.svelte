@@ -6,7 +6,7 @@
 	export let emoji: string = '📝';
 </script>
 
-<div class="flex flex-row w-full h-fit items-start justify-start space-x-3">
+<div class="flex flex-row w-full h-fit items-start justify-start space-x-3 bg-white">
 	<div class="flex flex-row items-center justify-center">
 		<div class="flex flex-row items-center justify-center w-12 h-12 bg-gray-50 rounded-xl">
 			<p class="text-2xl">{emoji}</p>

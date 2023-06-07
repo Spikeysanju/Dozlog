@@ -12,7 +12,7 @@
 {#if type === 'product'}
 	<div>
 		<div class="relative">
-			<div class="relative h-72 w-full overflow-hidden rounded-lg">
+			<div class="relative h-72 w-full overflow-hidden rounded-lg bg-white">
 				<img
 					src={image}
 					alt="Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls."
@@ -38,7 +38,7 @@
 		</div>
 	</div>
 {:else}
-	<div class="flex flex-row w-full items-center justify-center space-x-3">
+	<div class="flex flex-row w-full items-center justify-center space-x-3 rounded-lg p-3 bg-white">
 		<img src={image} alt={title} class="h-24 w-24 rounded-md object-cover object-center" />
 
 		<div class="flex w-full items-center justify-between">

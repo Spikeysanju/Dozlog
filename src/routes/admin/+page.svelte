@@ -322,13 +322,15 @@
 	onMount(async () => {
 		// init dozer client
 		const client = new ApiClient('order_count');
-		client.query().then(([fields, records]) => {
-			console.log('fields', JSON.stringify(fields, null, 2));
-			console.log('records', JSON.stringify(records, null, 2));
+		client
+			.query()
+			.then(([fields, records]) => {
+				console.log('fields', JSON.stringify(fields, null, 2));
+				console.log('records', JSON.stringify(records, null, 2));
 
-			orderCountState.records = records;
-			orderCountState.fields = fields;
-		});
+				orderCountState.records = records;
+				orderCountState.fields = fields;
+			});
 
 		client.getFields().then((fieldsResponse) => {
 			let fields = fieldsResponse.getFieldsList();
@@ -451,62 +453,72 @@
 				<!-- [ { "total_price": 198, "total_quantity": 6, "unique_users_count": 6, "avg_order_per_user": 1 } ] -->
 				<!-- [ { "total_cart_value": 20, "shipping_est": 5.32, "tax_est": 9.45, "total_cart_value_with_tax": 33.32, "total_items": 1 } ] -->
 
-				<h2 class="text-xl font-bold text-gray-900 py-3">Order stats</h2>
+				<div id="order-stats" class="space-y-3">
+					<h2 class="text-xl font-bold text-gray-900 py-3">Order stats</h2>
 
-				{#each orderCountState.records as item}
-					<Stats
-						title="Total Orders value"
-						value={`$${item.total_price}`}
-						stats={`$${item.total_price / item.unique_users_count} avg order per user`}
-					/>
-				{/each}
+					{#each orderCountState.records as item}
+						<Stats
+							title="Total Orders value"
+							value={`$${item.total_price}`}
+							stats={`$${item.total_price / item.unique_users_count} avg order per user`}
+						/>
+					{/each}
 
-				{#each orderCountState.records as item}
-					<Stats
-						title="Total Orders"
-						value={`${item.total_quantity}`}
-						stats={`${item.avg_order_per_user} avg order per user`}
-					/>
-				{/each}
+					{#each orderCountState.records as item}
+						<Stats
+							title="Total Orders"
+							value={`${item.total_quantity}`}
+							stats={`${item.avg_order_per_user} avg order per user`}
+						/>
+					{/each}
+				</div>
 
-				<h2 class="text-xl font-bold text-gray-900 py-3">Cart stats</h2>
+				<div id="cart-stats" class="space-y-3">
+					<h2 class="text-xl font-bold text-gray-900 py-3">Cart stats</h2>
 
-				{#each cartCountState.records as item}
-					<Stats
-						title="Total Cart value"
-						value={`$${item.total_cart_value}`}
-						stats="without any tax"
-					/>
-				{/each}
+					{#each cartCountState.records as item}
+						<Stats
+							title="Total Cart value"
+							value={`$${item.total_cart_value}`}
+							stats="without any tax"
+						/>
+					{/each}
 
-				{#each cartCountState.records as item}
-					<Stats title="Total Cart items" value={`${item.total_items}`} stats="all cart items" />
-				{/each}
+					{#each cartCountState.records as item}
+						<Stats title="Total Cart items" value={`${item.total_items}`} stats="all cart items" />
+					{/each}
 
-				{#each cartCountState.records as item}
-					<Stats title="Total Shipping fee" value={`${item.total_shipping}`} stats="" />
-				{/each}
+					{#each cartCountState.records as item}
+						<Stats
+							title="Total Shipping fee"
+							value={`${item.total_shipping}`}
+							stats="$5.32 per user cart"
+						/>
+					{/each}
 
-				{#each cartCountState.records as item}
-					<Stats title="Total Tax fee" value={`${item.total_tax}`} stats="" />
-				{/each}
+					{#each cartCountState.records as item}
+						<Stats title="Total Tax fee" value={`${item.total_tax}`} stats="$9.45 per user cart" />
+					{/each}
+				</div>
 
-				<h2 class="text-xl font-bold text-gray-900 py-3">User stats</h2>
-				{#each orderCountState.records as item}
-					<Stats
-						title="Total Users"
-						value={`${item.unique_users_count}`}
-						stats={`${item.avg_order_per_user} avg order per user`}
-					/>
-				{/each}
+				<div id="user-stats" class="space-y-3">
+					<h2 class="text-xl font-bold text-gray-900 py-3">User stats</h2>
+					{#each orderCountState.records as item}
+						<Stats
+							title="Total Users"
+							value={`${item.unique_users_count}`}
+							stats={`${item.avg_order_per_user} avg order per user`}
+						/>
+					{/each}
 
-				{#each orderCountState.records as item}
-					<Stats
-						title="Unique Users"
-						value={`${item.unique_users_count}`}
-						stats={`${item.avg_order_per_user} avg order per user`}
-					/>
-				{/each}
+					{#each orderCountState.records as item}
+						<Stats
+							title="Avg Users"
+							value={`${item.unique_users_count}`}
+							stats={`${item.avg_order_per_user} avg order per user`}
+						/>
+					{/each}
+				</div>
 			</div>
 		{/if}
 	</div>

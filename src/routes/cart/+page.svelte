@@ -225,7 +225,7 @@
 	}
 </script>
 
-<div class="bg-white">
+<div class="h-screen">
 	<h2 class="text-xl font-bold text-gray-900 py-3">My Cart</h2>
 
 	<div class=" w-full grid grid-cols-2 gap-x-6 items-start justify-center">

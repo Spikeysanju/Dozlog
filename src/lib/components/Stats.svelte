@@ -4,7 +4,7 @@
 	export let stats: string;
 </script>
 
-<div class="rounded-lg border bg-card text-card-foreground shadow-sm">
+<div class="rounded-lg border bg-card text-card-foreground shadow-sm bg-white">
 	<div class="p-6 flex flex-row items-center justify-between space-y-0 pb-2">
 		<h3 class="tracking-tight text-sm font-medium">{title}</h3>
 		<svg

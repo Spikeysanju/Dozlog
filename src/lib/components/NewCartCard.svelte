@@ -7,7 +7,7 @@
 </script>
 
 <div
-	class="flex flex-col w-full gap-3 items-center justify-center max-w-lg p-6 border border-r-gray-100 rounded-md"
+	class="flex flex-col w-full gap-3 items-center justify-center max-w-lg p-6 border border-r-gray-100 rounded-md bg-white"
 >
 	<div class="flex w-full items-center justify-between flex-row">
 		<div>
