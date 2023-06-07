@@ -64,11 +64,6 @@
 			let primaryIndexList = fieldsResponse.getPrimaryIndexList();
 			let primaryIndexKeys = primaryIndexList.map((index) => fields[index].getName());
 
-			console.info('fields', fields);
-			console.info('primary index keys', primaryIndexKeys);
-			console.log('primary index list', primaryIndexList);
-			console.info('mapper', mapper);
-
 			let stream = client.onEvent();
 			stream.on('data', (response) => {
 				if (response.getTyp() === OperationType.UPDATE) {
@@ -78,40 +73,30 @@
 						primaryIndexKeys.every((k) => v[k] === oldValue[k])
 					);
 
-					console.log('old', oldValue);
-					console.log('new', mapper.mapRecord(response?.getNew()?.getValuesList()!));
-					console.log('existingIndex', existingIndex);
-
 					if (existingIndex > -1) {
-						console.log('updating');
 						records[existingIndex] = mapper.mapRecord(response?.getNew()?.getValuesList()!);
-						console.log('updated', records[existingIndex]);
 						state.records = records;
 					}
+
+					console.log('updated', oldValue, mapper.mapRecord(response?.getNew()?.getValuesList()!));
 				}
 
 				// insert event
 				if (response.getTyp() === OperationType.INSERT) {
 					let record = mapper.mapRecord(response?.getNew()?.getValuesList()!);
-					console.log('inserting', record);
 					state.records = [record, ...state.records];
+					console.log('inserted', record);
 				}
 
 				// delete event
 				if (response.getTyp() === OperationType.DELETE) {
 					let record = mapper.mapRecord(response?.getNew()?.getValuesList()!);
-
 					let records = state.records;
-
 					let existingIndex = records.findIndex((v: { [x: string]: any }) =>
 						primaryIndexKeys.every((k) => v[k] === record[k])
 					);
 
-					console.log('deleting', record);
-					console.log('existingIndex', existingIndex);
-
 					if (existingIndex > -1) {
-						console.log('deleting');
 						records.splice(existingIndex, 1);
 						state.records = records;
 					}

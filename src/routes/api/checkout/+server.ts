@@ -32,7 +32,7 @@ export const POST = async ({ request, locals }) => {
 			userId: user.id,
 			productId: JSON.stringify(productIDs),
 			quantity: quantity,
-			totalPrice: totalPrice,
+			totalPrice: parseInt(totalPrice),
 			createdAt: new Date().toDateString(),
 			updatedAt: new Date().toDateString(),
 			id: nanoid(12)

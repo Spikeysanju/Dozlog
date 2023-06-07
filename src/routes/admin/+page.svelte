@@ -6,8 +6,8 @@
 	import NewUserCard from '$lib/components/NewUserCard.svelte';
 	import { className, clsx, convertISOTimestamp } from '$lib/utils/utils';
 	import NewOrderCard from '$lib/components/NewOrderCard.svelte';
-	import OrderProductCard from '$lib/components/OrderProductCard.svelte';
 	import NewCartCard from '$lib/components/NewCartCard.svelte';
+	import Stats from '$lib/components/Stats.svelte';
 
 	let results: any = null;
 	let records: any = [];
@@ -37,16 +37,33 @@
 		fields: []
 	};
 
-	let activeTab = 'users';
+	let cartCountState: any = {
+		records: [],
+		fields: []
+	};
+
+	let orderCountState: any = {
+		records: [],
+		fields: []
+	};
+
+	let activeTab = 'analytics';
 	let endpoint = 'user';
 
-	// when active tab is changed if users then endpoint is user else if it's cart then endpoint is cart else if it's orders then endpoint is orders
-	$: endpoint = activeTab === 'users' ? 'profile' : activeTab === 'cart' ? 'cart' : 'orders';
-
-	// total cart items
-	let totalCartItems = 0;
+	// when active tab is changed if users then endpoint is user else if it's cart then endpoint is cart else if it's orders then endpoint is orders else analytics
+	$: endpoint =
+		activeTab === 'users'
+			? 'profile'
+			: activeTab === 'cart'
+			? 'cart'
+			: activeTab === 'orders'
+			? 'orders'
+			: 'user';
 
 	const menu = [
+		{
+			name: 'Analytics'
+		},
 		{
 			name: 'Users'
 		},
@@ -247,6 +264,121 @@
 			});
 		});
 	});
+
+	onMount(async () => {
+		// init dozer client
+		const client = new ApiClient('cart_count');
+		client.query().then(([fields, records]) => {
+			console.log('fields', JSON.stringify(fields, null, 2));
+			console.log('records', JSON.stringify(records, null, 2));
+
+			cartCountState.records = records;
+			cartCountState.fields = fields;
+		});
+		client.getFields().then((fieldsResponse) => {
+			let fields = fieldsResponse.getFieldsList();
+			let mapper = new RecordMapper(fieldsResponse.getFieldsList());
+			let primaryIndexList = fieldsResponse.getPrimaryIndexList();
+			let primaryIndexKeys = primaryIndexList.map((index) => fields[index].getName());
+
+			let stream = client.onEvent();
+			stream.on('data', (response) => {
+				if (response.getTyp() === OperationType.UPDATE) {
+					let oldValue = mapper.mapRecord(response?.getOld()?.getValuesList()!);
+					let records = cartCountState.records;
+					let existingIndex = records.findIndex((v: { [x: string]: any }) =>
+						primaryIndexKeys.every((k) => v[k] === oldValue[k])
+					);
+
+					if (existingIndex > -1) {
+						records[existingIndex] = mapper.mapRecord(response?.getNew()?.getValuesList()!);
+						cartCountState.records = records;
+					}
+				}
+
+				// insert event
+				if (response.getTyp() === OperationType.INSERT) {
+					let record = mapper.mapRecord(response?.getNew()?.getValuesList()!);
+					cartCountState.records = [record, ...cartCountState.records];
+				}
+
+				// delete event
+				if (response.getTyp() === OperationType.DELETE) {
+					let record = mapper.mapRecord(response?.getNew()?.getValuesList()!);
+					let records = cartCountState.records;
+					let existingIndex = records.findIndex((v: { [x: string]: any }) =>
+						primaryIndexKeys.every((k) => v[k] === record[k])
+					);
+
+					if (existingIndex > -1) {
+						records.splice(existingIndex, 1);
+						cartCountState.records = records;
+					}
+				}
+			});
+		});
+	});
+
+	onMount(async () => {
+		// init dozer client
+		const client = new ApiClient('order_count');
+		client.query().then(([fields, records]) => {
+			console.log('fields', JSON.stringify(fields, null, 2));
+			console.log('records', JSON.stringify(records, null, 2));
+
+			orderCountState.records = records;
+			orderCountState.fields = fields;
+		});
+
+		client.getFields().then((fieldsResponse) => {
+			let fields = fieldsResponse.getFieldsList();
+			let mapper = new RecordMapper(fieldsResponse.getFieldsList());
+			let primaryIndexList = fieldsResponse.getPrimaryIndexList();
+			let primaryIndexKeys = primaryIndexList.map((index) => fields[index].getName());
+
+			let stream = client.onEvent();
+			stream.on('data', (response) => {
+				if (response.getTyp() === OperationType.UPDATE) {
+					let oldValue = mapper.mapRecord(response?.getOld()?.getValuesList()!);
+					let records = orderCountState.records;
+					let existingIndex = records.findIndex((v: { [x: string]: any }) =>
+						primaryIndexKeys.every((k) => v[k] === oldValue[k])
+					);
+
+					if (existingIndex > -1) {
+						records[existingIndex] = mapper.mapRecord(response?.getNew()?.getValuesList()!);
+						orderCountState.records = records;
+					}
+
+					console.log('update', JSON.stringify(response, null, 2));
+				}
+
+				// insert event
+				if (response.getTyp() === OperationType.INSERT) {
+					let record = mapper.mapRecord(response?.getNew()?.getValuesList()!);
+					orderCountState.records = [record, ...orderCountState.records];
+
+					console.log('insert', JSON.stringify(response, null, 2));
+				}
+
+				// delete event
+				if (response.getTyp() === OperationType.DELETE) {
+					let record = mapper.mapRecord(response?.getNew()?.getValuesList()!);
+					let records = orderCountState.records;
+					let existingIndex = records.findIndex((v: { [x: string]: any }) =>
+						primaryIndexKeys.every((k) => v[k] === record[k])
+					);
+
+					if (existingIndex > -1) {
+						records.splice(existingIndex, 1);
+						orderCountState.records = records;
+					}
+
+					console.log('delete', JSON.stringify(response, null, 2));
+				}
+			});
+		});
+	});
 </script>
 
 <div class="flex flex-col w-full items-center justify-center">
@@ -314,6 +446,68 @@
 					{/each}
 				</div>
 			{/if}
+		{:else if activeTab === 'analytics'}
+			<div class="mt-6 w-full flex flex-col gap-6">
+				<!-- [ { "total_price": 198, "total_quantity": 6, "unique_users_count": 6, "avg_order_per_user": 1 } ] -->
+				<!-- [ { "total_cart_value": 20, "shipping_est": 5.32, "tax_est": 9.45, "total_cart_value_with_tax": 33.32, "total_items": 1 } ] -->
+
+				<h2 class="text-xl font-bold text-gray-900 py-3">Order stats</h2>
+
+				{#each orderCountState.records as item}
+					<Stats
+						title="Total Orders value"
+						value={`$${item.total_price}`}
+						stats={`$${item.total_price / item.unique_users_count} avg order per user`}
+					/>
+				{/each}
+
+				{#each orderCountState.records as item}
+					<Stats
+						title="Total Orders"
+						value={`${item.total_quantity}`}
+						stats={`${item.avg_order_per_user} avg order per user`}
+					/>
+				{/each}
+
+				<h2 class="text-xl font-bold text-gray-900 py-3">Cart stats</h2>
+
+				{#each cartCountState.records as item}
+					<Stats
+						title="Total Cart value"
+						value={`$${item.total_cart_value}`}
+						stats="without any tax"
+					/>
+				{/each}
+
+				{#each cartCountState.records as item}
+					<Stats title="Total Cart items" value={`${item.total_items}`} stats="all cart items" />
+				{/each}
+
+				{#each cartCountState.records as item}
+					<Stats title="Total Shipping fee" value={`${item.total_shipping}`} stats="" />
+				{/each}
+
+				{#each cartCountState.records as item}
+					<Stats title="Total Tax fee" value={`${item.total_tax}`} stats="" />
+				{/each}
+
+				<h2 class="text-xl font-bold text-gray-900 py-3">User stats</h2>
+				{#each orderCountState.records as item}
+					<Stats
+						title="Total Users"
+						value={`${item.unique_users_count}`}
+						stats={`${item.avg_order_per_user} avg order per user`}
+					/>
+				{/each}
+
+				{#each orderCountState.records as item}
+					<Stats
+						title="Unique Users"
+						value={`${item.unique_users_count}`}
+						stats={`${item.avg_order_per_user} avg order per user`}
+					/>
+				{/each}
+			</div>
 		{/if}
 	</div>
 </div>

@@ -1,0 +1,80 @@
+cache_max_map_size: 2147483648
+connections:
+  - name: stic_conn
+    config: !Postgres
+      user: spikey
+      password: sticai123
+      host: localhost
+      port: 5432
+      database: postgres
+
+sql: |
+  SELECT 
+    SUM(p.price * c.quantity) AS total_cart_value,
+    5.32 AS shipping_est,
+    9.45 AS tax_est,
+    SUM(p.price * c.quantity) + 5.00 + 8.32 AS total_cart_value_with_tax,
+    COUNT(*) AS total_items,
+    5.32 * COUNT(*) AS total_shipping,
+    9.45 * COUNT(*) AS total_tax
+    INTO cart_count
+    FROM cart c
+    JOIN product p ON c."productId" = p.id;
+
+  SELECT 
+    SUM("totalPrice") AS total_price,
+    SUM(quantity) AS total_quantity,
+    COUNT(DISTINCT "userId") AS unique_users_count,
+    ROUND(CAST(SUM(quantity) AS FLOAT) / COUNT(DISTINCT "userId")) AS avg_order_per_user
+    INTO order_count
+    FROM "order";
+
+sources:
+  - name: product
+    table_name: product
+    connection: !Ref stic_conn
+    columns:
+      # - name
+
+  - name: cart
+    table_name: cart
+    connection: !Ref stic_conn
+    columns:
+      # - name
+
+  - name: profile
+    table_name: profile
+    connection: !Ref stic_conn
+    columns:
+      # - name
+
+  - name: order
+    table_name: order
+    connection: !Ref stic_conn
+    columns:
+      # - name
+
+endpoints:
+  - name: product
+    path: /product
+    table_name: product
+
+  - name: cart
+    path: /cart
+    table_name: cart
+
+  - name: profile
+    path: /profile
+    table_name: profile
+
+  - name: order
+    path: /order
+    table_name: order
+
+  - name: cart_count
+    path: /cart_count
+    table_name: cart_count
+
+  - name: order_count
+    path: /order_count
+    table_name: order_count
