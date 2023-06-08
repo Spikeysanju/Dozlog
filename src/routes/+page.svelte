@@ -22,17 +22,13 @@
 			}
 		};
 		const productClient = new ApiClient('product');
-		productClient
-			.query({
-				filter: filter
-			})
-			.then(([fields, records]) => {
-				console.log('fields', JSON.stringify(fields, null, 2));
-				console.log('records', JSON.stringify(records, null, 2));
+		productClient.query().then(([fields, records]) => {
+			console.log('fields', JSON.stringify(fields, null, 2));
+			console.log('records', JSON.stringify(records, null, 2));
 
-				productState.records = records;
-				productState.fields = fields;
-			});
+			productState.records = records;
+			productState.fields = fields;
+		});
 
 		// init dozer client
 		productClient.getFields().then((fieldsResponse) => {

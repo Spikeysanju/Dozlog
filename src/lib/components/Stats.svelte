@@ -24,7 +24,7 @@
 		>
 	</div>
 	<div class="p-6 pt-0">
-		<div class="text-2xl font-bold">{value}</div>
+		<div class="text-3xl font-bold">{value}</div>
 		<p class="text-xs text-muted-foreground">{stats}</p>
 	</div>
 </div>

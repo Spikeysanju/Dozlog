@@ -62,6 +62,31 @@ export interface Cart {
 	updatedAt: Timestamp;
 }
 
+// order cancellation with a reason and a user id reason can be a enum of reasons
+export enum OrderCancellationReason {
+	OUT_OF_STOCK = 'Out of stock',
+	NOT_ENOUGH_MONEY = 'Not enough money',
+	BOUGHT_SOMEWHERE_ELSE = 'Bought somewhere else',
+	OTHER = 'Other'
+}
+
+export interface OrderCancellation {
+	id: Generated<string>;
+	userId: string;
+	orderId: string;
+	reason: OrderCancellationReason;
+	createdAt: Timestamp;
+	updatedAt: Timestamp;
+}
+
+// order status with a enum of statuses and a user id
+export enum OrderStatus {
+	PROCESSING = 'PROCESSING',
+	DELIVERING = 'DELIVERING',
+	DELIVERED = 'DELIVERED',
+	CANCELLED = 'CANCELLED'
+}
+
 // create orders with multiple product ids and quantities and a total price and a user id
 export interface Order {
 	id: Generated<string>;
@@ -69,6 +94,16 @@ export interface Order {
 	productId: any;
 	quantity: number;
 	totalPrice: number;
+	orderStatus: OrderStatus;
+	createdAt: Timestamp;
+	updatedAt: Timestamp;
+}
+
+export interface OrderStatusUpdate {
+	id: Generated<string>;
+	userId: string;
+	orderId: string;
+	status: OrderStatus;
 	createdAt: Timestamp;
 	updatedAt: Timestamp;
 }
@@ -81,6 +116,7 @@ export interface Database {
 	session: Session;
 	verificationToken: VerificationToken;
 	order: Order;
+	orderCancellation: OrderCancellation;
 }
 
 // You'd create one of these when you start your app.
