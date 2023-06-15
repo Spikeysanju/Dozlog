@@ -1,6 +1,20 @@
 <script lang="ts">
-	import ProductCard from '$lib/components/ProductCard.svelte';
-	export let data;
+	import { ApiClient } from '@dozerjs/dozer';
+	import { onMount } from 'svelte';
+
+	let productState: any = {
+		records: [],
+		fields: []
+	};
+
+	onMount(async () => {
+		// init dozer client
+		const dozer = new ApiClient('all_products');
+		dozer.query().then(([fields, records]) => {
+			productState.records = records;
+			productState.fields = fields;
+		});
+	});
 </script>
 
 <div class="bg-white">
@@ -8,13 +22,9 @@
 		<h2 class="text-xl font-bold text-gray-900">Based on your last visit</h2>
 
 		<div class="mt-8 grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
-			<ProductCard
-				title="Tick tack shoes"
-				description="shoes company"
-				price={123}
-				image="https://tailwindui.com/img/ecommerce-images/product-page-03-related-product-01.jpg"
-				on:click={() => console.log('clicked')}
-			/>
+			{#each productState.records as item}
+				<h1>{item.name}</h1>
+			{/each}
 		</div>
 	</div>
 </div>

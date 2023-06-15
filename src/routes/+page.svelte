@@ -1,10 +1,8 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
 	import ProductCard from '$lib/components/ProductCard.svelte';
 	import { ApiClient } from '@dozerjs/dozer';
 	import { RecordMapper } from '@dozerjs/dozer/lib/cjs/helper';
 	import { OperationType } from '@dozerjs/dozer/lib/esm/generated/protos/types_pb.js';
-	import type { DozerFilter } from '@dozerjs/dozer/lib/esm/query_helper.js';
 	import { onMount } from 'svelte';
 
 	let results: any = null;
@@ -16,28 +14,29 @@
 	};
 
 	onMount(async () => {
-		const filter: DozerFilter = {
-			name: {
-				$eq: 'Product 1'
-			}
-		};
-		const productClient = new ApiClient('product');
-		productClient.query().then(([fields, records]) => {
-			console.log('fields', JSON.stringify(fields, null, 2));
-			console.log('records', JSON.stringify(records, null, 2));
+		// dozer filter example
+		// const filter: DozerFilter = {
+		// 	// name is the column name in the product table
+		// 	name: {
+		// 		$eq: 'Product 1'
+		// 	}
+		// };
 
+		// init dozer client
+		const dozer = new ApiClient('product');
+		dozer.query().then(([fields, records]) => {
 			productState.records = records;
 			productState.fields = fields;
 		});
 
 		// init dozer client
-		productClient.getFields().then((fieldsResponse) => {
+		dozer.getFields().then((fieldsResponse) => {
 			let fields = fieldsResponse.getFieldsList();
 			let mapper = new RecordMapper(fieldsResponse.getFieldsList());
 			let primaryIndexList = fieldsResponse.getPrimaryIndexList();
 			let primaryIndexKeys = primaryIndexList.map((index) => fields[index].getName());
 
-			let stream = productClient.onEvent();
+			let stream = dozer.onEvent();
 			stream.on('data', (response) => {
 				if (response.getTyp() === OperationType.UPDATE) {
 					let oldValue = mapper.mapRecord(response?.getOld()?.getValuesList()!);
