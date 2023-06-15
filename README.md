@@ -1,9 +1,9 @@
+![Alt text](image.png)
 ## Welcome to Dozlog
 Dozlog is an sample mini ecommerce application to mimic the realtime admin dashboard with postgres & dozer js library and built with svelte. This application features how you can build your own realtime admin dashboard with dozer & sveltekit.
 
 
 ## Getting Started
-
 We need few things to setup initial to run this application. 
 
 1. Create a new  `.env`  file and below values. (Checkout `.env.local` for an example)
@@ -12,7 +12,7 @@ We need few things to setup initial to run this application.
 DATABASE_URL='postgresql://[database]:[password]@localhost:5432/postgres'
 
 # AUTHJS CONFIG
-AUTH_SECRET="64dac3fe28fbf242d11982565d165583" // Use this to generate secret -> https://generate-secret.vercel.app/32
+AUTH_SECRET="64dac3fe28fbf242d11982565d165583" // Use this to generate secret - https://generate-secret.vercel.app/32
 AUTH_TRUST_HOST="true"
 
 # GITHUB CONFIG
