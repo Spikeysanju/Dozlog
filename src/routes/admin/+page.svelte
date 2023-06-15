@@ -459,7 +459,7 @@
 							<div class="col-span-5 sm:col-span-3">
 								<Stats
 									title="Total Orders value"
-									value={`$${item.total_price}`}
+									value={`$${item.total_price.toFixed(2)}`}
 									stats={`$${(item.total_price / item.unique_users_count).toFixed(
 										2
 									)} avg order per user`}
@@ -469,16 +469,16 @@
 							<div class="col-span-5 sm:col-span-2">
 								<Stats
 									title="Total Orders"
-									value={`${item.total_quantity}`}
-									stats={`${item.avg_order_per_user} avg order per user`}
+									value={`${item.total_quantity.toFixed(2)}`}
+									stats={`${item.avg_order_per_user.toFixed(2)} avg order per user`}
 								/>
 							</div>
 
 							<div class="col-span-5 sm:col-span-5">
 								<Stats
 									title="Cancellations"
-									value={`${item.total_quantity}`}
-									stats={`${item.avg_order_per_user} avg order per user`}
+									value={`${item.total_quantity.toFixed(2)}`}
+									stats={`${item.avg_order_per_user.toFixed(2)} avg order per user`}
 								/>
 							</div>
 						{/each}
@@ -493,7 +493,7 @@
 							<div class="col-span-5 sm:col-span-3">
 								<Stats
 									title="Total Cart value"
-									value={`$${item.total_cart_value}`}
+									value={`$${item.total_cart_value.toFixed(2)}`}
 									stats="without tax and shipping"
 								/>
 							</div>
@@ -501,7 +501,7 @@
 							<div class="col-span-5 sm:col-span-2">
 								<Stats
 									title="Total Cart items"
-									value={`${item.total_items}`}
+									value={`${item.total_items.toFixed(2)}`}
 									stats="across all users"
 								/>
 							</div>
@@ -509,7 +509,7 @@
 							<div class="col-span-5 sm:col-span-2">
 								<Stats
 									title="Total Shipping fee"
-									value={`${item.total_shipping}`}
+									value={`${item.total_shipping.toFixed(2)}`}
 									stats="$5.32 per user cart"
 								/>
 							</div>
@@ -517,7 +517,7 @@
 							<div class="col-span-5 sm:col-span-2">
 								<Stats
 									title="Total Tax fee"
-									value={`${item.total_tax}`}
+									value={`${item.total_tax.toFixed(2)}`}
 									stats="$9.45 per user cart"
 								/>
 							</div>
@@ -530,14 +530,14 @@
 					{#each orderCountState.records as item}
 						<Stats
 							title="Total Users"
-							value={`${item.unique_users_count}`}
-							stats={`${item.avg_order_per_user} avg order per user`}
+							value={`${item.unique_users_count.toFixed(2)}`}
+							stats={`${item.avg_order_per_user.toFixed(2)} avg order per user`}
 						/>
 
 						<Stats
 							title="Avg Users"
-							value={`${item.unique_users_count}`}
-							stats={`${item.avg_order_per_user} avg order per user`}
+							value={`${item.unique_users_count.toFixed(2)}`}
+							stats={`${item.avg_order_per_user.toFixed(2)} avg order per user`}
 						/>
 					{/each}
 				</div>
