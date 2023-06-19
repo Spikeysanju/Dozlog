@@ -382,7 +382,7 @@
 </script>
 
 <div class="flex flex-col w-full items-center justify-center">
-	<h1 class="text-2xl font-bold text-gray-900 text-start w-full">Realtime logs</h1>
+	<h1 class="text-2xl font-bold text-gray-900 text-start w-full">Realtime Activities</h1>
 	<div class="flex flex-col items-start justify-start w-full overflow-auto">
 		<div
 			class="flex flex-row w-auto mt-3 items-start justify-start gap-3 py-2 bg-gray-50 px-3 rounded-lg"

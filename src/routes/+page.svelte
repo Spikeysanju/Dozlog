@@ -18,7 +18,7 @@
 		// const filter: DozerFilter = {
 		// 	// name is the column name in the product table
 		// 	name: {
-		// 		$eq: 'Product 1'
+		// 		$eq: 'Prokkk   duct 1'
 		// 	}
 		// };
 

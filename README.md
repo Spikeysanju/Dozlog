@@ -94,12 +94,19 @@ CREATE TABLE orders (
     updatedAt TIMESTAMP NOT NULL
 );
 
-INSERT INTO "Product" (id, name, description, price, "userId", "createdAt", "updatedAt") 
-VALUES ('23323232', 'Dummy Product', null, 10.99, '7pI_uRRxAmhhg7XCLICNF', '2022-02-22 00:00:00', '2022-02-22 00:00:00');
 
-ALTER TABLE product
-ALTER COLUMN price TYPE numeric(10,2) USING price::numeric(10,2);
 ALTER TABLE product ALTER COLUMN price TYPE INTEGER USING price::INTEGER;
+
+# To add dummy products to database you can run
+
+INSERT INTO product (id, name, description, price, image, "userId", "createdAt", "updatedAt")
+VALUES
+    ('1', 'Product 1', 'Description for Product 1', 10, 'image1.jpg', 'your-user-id', '2021-01-01 10:00:00', '2021-01-01 10:00:00'),
+    ('2', 'Product 2', 'Description for Product 2', 20, 'image2.jpg', 'your-user-id', '2021-01-02 11:00:00', '2021-01-02 11:00:00'),
+    ('3', 'Product 3', 'Description for Product 3', 30, 'image3.jpg', 'your-user-id', '2021-01-03 12:00:00', '2021-01-03 12:00:00'),
+    ('4', 'Product 4', 'Description for Product 4', 40, 'image4.jpg', 'your-user-id', '2021-01-04 13:00:00', '2021-01-04 13:00:00'),
+    ('5', 'Product 5', 'Description for Product 5', 50, 'image5.jpg', 'your-user-id', '2021-01-05 14:00:00', '2021-01-05 14:00:00');
+
 ```
 
 3. After successfully running the query, you will be able to see the tables in your database.
@@ -116,6 +123,7 @@ npm run dev
 ## Learn More
 
 To learn more about Dozer JS, take a look at the following resources:
+
 - [Dozer JS Documentation](https://getdozer.io/) - learn about Dozer JS features and API.
 - [Learn Dozer JS](https://getdozer.io/) - an interactive Dozer JS tutorial.
 
