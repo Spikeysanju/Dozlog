@@ -1,6 +1,7 @@
 import { db, type Cart } from '$lib/db/db';
 import { fail, redirect } from '@sveltejs/kit';
 import { nanoid } from 'nanoid';
+import prisma from '$lib/prisma/prisma';
 
 export const load = async ({ locals }) => {
 	const session = await locals.getSession();
@@ -9,20 +10,10 @@ export const load = async ({ locals }) => {
 		throw redirect(303, '/login');
 	}
 
-	const user = await db
-		.selectFrom('profile')
-		.selectAll()
-		.where('email', '=', session.user?.email as string)
-		.executeTakeFirstOrThrow();
-
-	if (!user) {
-		throw redirect(303, '/login');
-	}
-
-	const products = await db.selectFrom('product').selectAll().execute();
+	const products = await prisma.product.findMany();
 
 	return {
-		currentUser: user,
+		currentUser: session.user,
 		products: products
 	};
 };
@@ -38,11 +29,11 @@ export const actions = {
 			throw redirect(303, '/login');
 		}
 
-		const user = await db
-			.selectFrom('profile')
-			.selectAll()
-			.where('email', '=', session.user?.email as string)
-			.executeTakeFirstOrThrow();
+		const user = await prisma.user.findUnique({
+			where: {
+				email: session.user.email as string
+			}
+		});
 
 		// Convenient validation check:
 		if (!productId) {
@@ -58,20 +49,22 @@ export const actions = {
 		console.log('server form', productId, quantity, user.id);
 
 		// add item to cart
-		const data = await db
-			.insertInto('cart')
-			.values({
+		const cart = await prisma.cart.create({
+			data: {
+				id: nanoid(12),
 				productId: productId,
 				quantity: parseInt(quantity),
-				userId: user.id,
-				createdAt: new Date().toDateString(),
-				updatedAt: new Date().toDateString(),
-				id: nanoid(12)
-			})
-			.returning('id')
-			.executeTakeFirstOrThrow();
+				user: {
+					connect: {
+						id: user.id
+					}
+				},
+				createdAt: new Date().toISOString(),
+				updatedAt: new Date().toISOString()
+			}
+		});
 
-		console.log('server form', data);
+		console.log('item added to cart:', cart);
 
 		return {
 			status: 201,

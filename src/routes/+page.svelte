@@ -23,7 +23,7 @@
 		// };
 
 		// init dozer client
-		const dozer = new ApiClient('product');
+		const dozer = new ApiClient('products');
 		dozer.query().then(([fields, records]) => {
 			productState.records = records;
 			productState.fields = fields;

@@ -18,8 +18,8 @@ sql: |
     5.32 * COUNT(*) AS total_shipping,
     9.45 * COUNT(*) AS total_tax
     INTO cart_count
-    FROM cart c
-    JOIN product p ON c."productId" = p.id;
+    FROM carts c
+    JOIN products p ON c."productId" = p.id;
 
   SELECT 
     SUM("totalPrice") AS total_price,
@@ -27,51 +27,49 @@ sql: |
     COUNT(DISTINCT "userId") AS unique_users_count,
     ROUND(CAST(SUM(quantity) AS FLOAT) / COUNT(DISTINCT "userId")) AS avg_order_per_user
     INTO order_count
-    FROM "order";
-
-  SELECT * FROM into allproducts "product";
+    FROM "orders";
 
 sources:
   - name: product
-    table_name: product
+    table_name: products
     connection: !Ref stic_conn
     columns:
       # - name
 
   - name: cart
-    table_name: cart
+    table_name: carts
     connection: !Ref stic_conn
     columns:
       # - name
 
-  - name: profile
-    table_name: profile
+  - name: user
+    table_name: users
     connection: !Ref stic_conn
     columns:
       # - name
 
-  - name: order
-    table_name: order
+  - name: orders
+    table_name: orders
     connection: !Ref stic_conn
     columns:
       # - name
 
 endpoints:
-  - name: product
-    path: /product
-    table_name: product
+  - name: products
+    path: /products
+    table_name: products
 
-  - name: cart
-    path: /cart
-    table_name: cart
+  - name: carts
+    path: /carts
+    table_name: carts
 
-  - name: profile
-    path: /profile
-    table_name: profile
+  - name: users
+    path: /users
+    table_name: users
 
-  - name: order
-    path: /order
-    table_name: order
+  - name: orders
+    path: /orders
+    table_name: orders
 
   - name: cart_count
     path: /cart_count

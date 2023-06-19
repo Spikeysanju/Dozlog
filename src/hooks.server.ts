@@ -2,12 +2,14 @@ import { SvelteKitAuth } from '@auth/sveltekit';
 import GitHub from '@auth/core/providers/github';
 import { GITHUB_ID, GITHUB_SECRET, AUTH_SECRET } from '$env/static/private';
 import type { Handle } from '@sveltejs/kit';
-import { KyselyAdapter } from '$lib/adapter/KyselyAdapter';
-import { db } from '$lib/db/db';
+import type { Adapter } from '@auth/core/adapters';
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
+import prisma from '$lib/prisma/prisma';
+
 
 export const handle = SvelteKitAuth({
 	trustHost: true,
-	adapter: KyselyAdapter(db),
+	adapter: PrismaAdapter(prisma) as Adapter,
 	secret: AUTH_SECRET,
 	providers: [GitHub({ clientId: GITHUB_ID, clientSecret: GITHUB_SECRET })] as any,
 	session: {
@@ -47,6 +49,6 @@ export const handle = SvelteKitAuth({
 		},
 		session(message) {
 			console.log('👮‍♂️ User', message);
-		},
+		}
 	}
 }) satisfies Handle;

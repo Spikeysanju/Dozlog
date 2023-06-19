@@ -1,9 +1,5 @@
 import { fail, redirect } from '@sveltejs/kit';
-import { db } from '$lib/db/db';
-
-export const load = async () => {
-	return {};
-};
+import prisma from '$lib/prisma/prisma';
 
 export const actions = {
 	removeFromCart: async ({ request, locals, url }) => {
@@ -15,24 +11,18 @@ export const actions = {
 			throw redirect(303, '/login');
 		}
 
-		const user = await db
-			.selectFrom('profile')
-			.selectAll()
-			.where('email', '=', session.user?.email as string)
-			.executeTakeFirstOrThrow();
-
 		if (!id) {
 			return fail(400, { message: 'Missing cart id' });
 		}
 
-		// remove item from cart
-		const data = await db
-			.deleteFrom('cart')
-			.where('userId', '=', user.id)
-			.where('cart.id', '=', id)
-			.execute();
+		// remove item from only user's cart (not all users)
+		const data = await prisma.cart.delete({
+			where: {
+				id: id
+			}
+		});
 
-		console.log('server form', data);
+		console.log('Item removed from cart:', data);
 
 		return {
 			status: 201,
@@ -48,24 +38,18 @@ export const actions = {
 			throw redirect(303, '/login');
 		}
 
-		const user = await db
-			.selectFrom('profile')
-			.selectAll()
-			.where('email', '=', session.user?.email as string)
-			.executeTakeFirstOrThrow();
-
 		if (!id) {
 			return fail(400, { message: 'Missing cart id' });
 		}
 
 		// remove item from cart
-		const data = await db
-			.deleteFrom('cart')
-			.where('userId', '=', user.id)
-			.where('cart.id', '=', id)
-			.execute();
+		const data = await prisma.cart.delete({
+			where: {
+				id: id
+			}
+		});
 
-		console.log('server form', data);
+		console.log('Item moved to orders:', data);
 
 		return {
 			status: 201,

@@ -4,8 +4,10 @@
 declare global {
 	namespace App {
 		// interface Error {}
-		// interface Locals {}
-		// interface PageData {}
+		interface Locals {
+			getSession: () => Promise<import('@auth/core').Session | null>;
+			user: import('@prisma/client').User | null;
+		} // interface PageData {}
 		// interface Platform {}
 	}
 }

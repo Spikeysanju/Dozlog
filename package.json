@@ -43,11 +43,14 @@
 		"@auth/core": "^0.5.1",
 		"@auth/sveltekit": "^0.3.0",
 		"@dozerjs/dozer": "^0.0.6",
+		"@prisma/client": "^4.15.0",
 		"authjs-adapter-sql": "^0.2.1",
 		"kysely": "^0.24.2",
 		"nanoid": "^4.0.2",
 		"pg": "^8.10.0",
 		"pg-promise": "^11.4.3",
-		"svelte-legos": "^0.2.1"
+		"prisma": "^4.15.0",
+		"svelte-legos": "^0.2.1",
+		"@next-auth/prisma-adapter": "^1.0.5"
 	}
 }

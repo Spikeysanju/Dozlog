@@ -26,7 +26,7 @@
 	let taxPrice = 8.32;
 
 	$: allCartItems = state.records.map((cartItem: any) => {
-		let product = productState.records.find((product: any) => product.id === cartItem.productId);
+		let product = productState.records.find((product: any) => product.id === cartItem.product_id);
 		return {
 			...product,
 			quantity: cartItem.quantity,
@@ -49,7 +49,7 @@
 
 	onMount(async () => {
 		// init dozer client
-		const client = new ApiClient('cart');
+		const client = new ApiClient('carts');
 		client.query().then(([fields, records]) => {
 			console.log('fields', JSON.stringify(fields, null, 2));
 			console.log('records', JSON.stringify(records, null, 2));
@@ -108,7 +108,7 @@
 	});
 
 	onMount(async () => {
-		const productClient = new ApiClient('product');
+		const productClient = new ApiClient('products');
 		productClient.query().then(([fields, records]) => {
 			console.log('fields', JSON.stringify(fields, null, 2));
 			console.log('records', JSON.stringify(records, null, 2));
@@ -228,7 +228,9 @@
 <div class="h-screen">
 	<h2 class="text-xl font-bold text-gray-900 py-3">My Cart</h2>
 
-	<div class=" w-full grid grid-cols-2 gap-x-6 items-start justify-center">
+	<div>{JSON.stringify(allCartItems)}</div>
+
+	<!-- <div class=" w-full grid grid-cols-2 gap-x-6 items-start justify-center">
 		<div
 			id="cart-items"
 			class="flex flex-col col-span-2 sm:col-span-1 w-full items-center justify-center gap-3 max-w-2xl"
@@ -318,5 +320,5 @@
 				</section>
 			</div>
 		{/if}
-	</div>
+	</div> -->
 </div>
