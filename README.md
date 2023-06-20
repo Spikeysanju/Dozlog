@@ -70,7 +70,6 @@ CREATE TABLE IF NOT EXISTS product (
     description VARCHAR(255),
     price DECIMAL(10, 2) NOT NULL,
     image VARCHAR(512) NOT NULL,
-    "userId" VARCHAR(255) NOT NULL,
     "createdAt" TIMESTAMP,
     "updatedAt" TIMESTAMP NOT NULL
 );
@@ -99,13 +98,13 @@ ALTER TABLE product ALTER COLUMN price TYPE INTEGER USING price::INTEGER;
 
 --To add dummy products to database you can run
 
-INSERT INTO product (id, name, description, price, image, createdat, updatedAt")
+INSERT INTO product (id, name, description, price, image, "createdAt", "updatedAt")
 VALUES
-    ('1', 'Product 1', 'Description for Product 1', 10, 'image1.jpg', 'your-user-id', '2021-01-01 10:00:00', '2021-01-01 10:00:00'),
-    ('2', 'Product 2', 'Description for Product 2', 20, 'image2.jpg', 'your-user-id', '2021-01-02 11:00:00', '2021-01-02 11:00:00'),
-    ('3', 'Product 3', 'Description for Product 3', 30, 'image3.jpg', 'your-user-id', '2021-01-03 12:00:00', '2021-01-03 12:00:00'),
-    ('4', 'Product 4', 'Description for Product 4', 40, 'image4.jpg', 'your-user-id', '2021-01-04 13:00:00', '2021-01-04 13:00:00'),
-    ('5', 'Product 5', 'Description for Product 5', 50, 'image5.jpg', 'your-user-id', '2021-01-05 14:00:00', '2021-01-05 14:00:00');
+    ('1', 'Product 1', 'Description for Product 1', 10, 'https://images.pexels.com/photos/1464625/pexels-photo-1464625.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1', 'your-user-id', '2021-01-01 10:00:00', '2021-01-01 10:00:00'),
+    ('2', 'Product 2', 'Description for Product 2', 20, 'https://images.pexels.com/photos/1879096/pexels-photo-1879096.jpeg?auto=compress&cs=tinysrgb&w=1600', 'your-user-id', '2021-01-02 11:00:00', '2021-01-02 11:00:00'),
+    ('3', 'Product 3', 'Description for Product 3', 30, 'https://images.pexels.com/photos/1879101/pexels-photo-1879101.jpeg?auto=compress&cs=tinysrgb&w=1600', 'your-user-id', '2021-01-03 12:00:00', '2021-01-03 12:00:00'),
+    ('4', 'Product 4', 'Description for Product 4', 40, 'https://images.pexels.com/photos/4296072/pexels-photo-4296072.jpeg?auto=compress&cs=tinysrgb&w=1600', 'your-user-id', '2021-01-04 13:00:00', '2021-01-04 13:00:00'),
+    ('5', 'Product 5', 'Description for Product 5', 50, 'https://images.pexels.com/photos/4296075/pexels-photo-4296075.jpeg?auto=compress&cs=tinysrgb&w=1600', 'your-user-id', '2021-01-05 14:00:00', '2021-01-05 14:00:00');
 
 ```
 
