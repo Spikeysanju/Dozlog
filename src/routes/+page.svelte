@@ -3,6 +3,7 @@
 	import { ApiClient } from '@dozerjs/dozer';
 	import { RecordMapper } from '@dozerjs/dozer/lib/cjs/helper';
 	import { OperationType } from '@dozerjs/dozer/lib/esm/generated/protos/types_pb.js';
+	import { Order, type DozerFilter } from '@dozerjs/dozer/lib/esm/query_helper.js';
 	import { onMount } from 'svelte';
 
 	let results: any = null;
@@ -14,7 +15,7 @@
 	};
 
 	onMount(async () => {
-		// dozer filter example
+		// // dozer filter example
 		// const filter: DozerFilter = {
 		// 	// name is the column name in the product table
 		// 	name: {
