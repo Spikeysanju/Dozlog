@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS product (
     id VARCHAR(255) PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     description VARCHAR(255),
-    price DECIMAL(10, 2) NOT NULL,
+    price INT NOT NULL,
     image VARCHAR(512) NOT NULL,
     "createdAt" TIMESTAMP,
     "updatedAt" TIMESTAMP NOT NULL
@@ -93,8 +93,6 @@ CREATE TABLE order (
     "updatedAt" TIMESTAMP NOT NULL
 );
 
-
-ALTER TABLE product ALTER COLUMN price TYPE INTEGER USING price::INTEGER;
 
 --To add dummy products to database you can run
 
