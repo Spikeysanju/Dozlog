@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS session (
     id VARCHAR(255) PRIMARY KEY,
     "sessionToken" VARCHAR(255) NOT NULL,
     expires TIMESTAMP NOT NULL,
-    userId VARCHAR(255) NOT NULL
+    "userId" VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS verificationToken (
@@ -70,28 +70,28 @@ CREATE TABLE IF NOT EXISTS product (
     description VARCHAR(255),
     price DECIMAL(10, 2) NOT NULL,
     image VARCHAR(512) NOT NULL,
-    userId VARCHAR(255) NOT NULL,
-    createdAt TIMESTAMP,
-    updatedAt TIMESTAMP NOT NULL
+    "userId" VARCHAR(255) NOT NULL,
+    "createdAt" TIMESTAMP,
+    "updatedAt" TIMESTAMP NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS cart (
     id VARCHAR(255) PRIMARY KEY,
-    userId VARCHAR(255) NOT NULL,
-    productId VARCHAR(255) NOT NULL,
+    "userId" VARCHAR(255) NOT NULL,
+    "productId" VARCHAR(255) NOT NULL,
     quantity INT,
-    createdAt TIMESTAMP,
-    updatedAt TIMESTAMP NOT NULL
+    "createdAt" TIMESTAMP,
+    "updatedAt" TIMESTAMP NOT NULL
 );
 
 CREATE TABLE orders (
     id VARCHAR(255) PRIMARY KEY,
-    userId VARCHAR(255) NOT NULL,
-    productId VARCHAR(255) NOT NULL,
+    "userId VARCHAR(255) NOT NULL,
+    "productId" VARCHAR(255) NOT NULL,
     quantity INT NOT NULL,
-    totalPrice INT NOT NULL,
-    createdAt TIMESTAMP NOT NULL,
-    updatedAt TIMESTAMP NOT NULL
+    "totalPrice" INT NOT NULL,
+    "createdAt" TIMESTAMP NOT NULL,
+    "updatedAt" TIMESTAMP NOT NULL
 );
 
 
@@ -99,7 +99,7 @@ ALTER TABLE product ALTER COLUMN price TYPE INTEGER USING price::INTEGER;
 
 --To add dummy products to database you can run
 
-INSERT INTO product (id, name, description, price, image, "userId", "createdAt", "updatedAt")
+INSERT INTO product (id, name, description, price, image, createdat, updatedAt")
 VALUES
     ('1', 'Product 1', 'Description for Product 1', 10, 'image1.jpg', 'your-user-id', '2021-01-01 10:00:00', '2021-01-01 10:00:00'),
     ('2', 'Product 2', 'Description for Product 2', 20, 'image2.jpg', 'your-user-id', '2021-01-02 11:00:00', '2021-01-02 11:00:00'),
