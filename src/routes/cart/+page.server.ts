@@ -12,7 +12,7 @@ export const actions = {
 		const id = formData.get('id') as string;
 
 		if (!session) {
-			throw redirect(303, '/login');
+			throw redirect(303, '/auth/signin?csrf=true');
 		}
 
 		const user = await db
@@ -45,7 +45,7 @@ export const actions = {
 		const id = formData.get('id') as string;
 
 		if (!session) {
-			throw redirect(303, '/login');
+			throw redirect(303, '/auth/signin?csrf=true');
 		}
 
 		const user = await db

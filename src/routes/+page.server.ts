@@ -6,9 +6,8 @@ export const load = async ({ locals }) => {
 	const session = await locals.getSession();
 
 	if (!session) {
-		throw redirect(303, '/login');
+		throw redirect(303, '/auth/signin');
 	}
-
 	const user = await db
 		.selectFrom('profile')
 		.selectAll()
@@ -16,7 +15,7 @@ export const load = async ({ locals }) => {
 		.executeTakeFirstOrThrow();
 
 	if (!user) {
-		throw redirect(303, '/login');
+		throw redirect(303, '/auth/signin?csrf=true');
 	}
 
 	const products = await db.selectFrom('product').selectAll().execute();
@@ -35,7 +34,7 @@ export const actions = {
 		const quantity = formData.get('quantity') as string;
 
 		if (!session) {
-			throw redirect(303, '/login');
+			throw redirect(303, '/auth/signin?csrf=true');
 		}
 
 		const user = await db
