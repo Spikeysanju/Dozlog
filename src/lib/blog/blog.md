@@ -1,3 +1,5 @@
+!add different hook about problem statement
+
 Building powerful data apps typically requires an extensive amount of time, careful planning, and integration of multiple tools. In our organization, we had the need to create an admin dashboard for tracking statistics related to our product.
 
 Initially, we considered building the dashboard from scratch, but we had specific requirements in mind:
@@ -10,9 +12,10 @@ Initially, we considered building the dashboard from scratch, but we had specifi
 We explored various tech stacks to find the right solution, and then we came across Dozer. This caught our attention after hearing positive discussions about it on Hackernews. Intrigued, we decided to give it a try, and the results were impressive. To provide a practical demonstration, we created a mini e-commerce app with an admin panel using Dozer.
 
 ## 📺 Demo
-
 Demo of Dozlog – powered by Dozer
 -> url goes here
+
+!one diagram about dozlog – explains about flows, data flow, fetching -> reference abishek's blog
 
 ## ⚡ What's Dozer?
 
@@ -565,4 +568,12 @@ The above example demonstrates different filter operators:
 - $matches_all (Array matches all)
 
 You can use these filter operators to customize your query and retrieve specific records based on the defined conditions.
+
+
+## Additional project
+upcoming lamba function usecase. 
+
+## Dozer references to learn more about
+
+
 

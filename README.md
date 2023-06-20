@@ -97,7 +97,7 @@ CREATE TABLE orders (
 
 ALTER TABLE product ALTER COLUMN price TYPE INTEGER USING price::INTEGER;
 
-# To add dummy products to database you can run
+--To add dummy products to database you can run
 
 INSERT INTO product (id, name, description, price, image, "userId", "createdAt", "updatedAt")
 VALUES
