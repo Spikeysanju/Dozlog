@@ -168,7 +168,7 @@ port: 5432
 database: postgres
 ```
 
-==Note: One of the impressive features of Dozer is that you can connect multiple Postgres instances within a single Dozer file. This flexibility allows you to seamlessly manage and work with multiple databases using Dozer.
+Note: One of the impressive features of Dozer is that you can connect multiple Postgres instances within a single Dozer file. This flexibility allows you to seamlessly manage and work with multiple databases using Dozer.
 
 ### ✍️ Sql
 
@@ -284,11 +284,9 @@ Now that you have an idea of how to set up Dozer and understand its functionalit
 
 ## ✳️ Working with Dozer JS
 
-In above we have seen how Dozer JS works & Setting up Dozer. Now you may have queries how to use Dozer on any frontend frameworks.
+After understanding how Dozer works and setting it up, you might be wondering how to use Dozer with frontend frameworks. The answer is Dozer JS, the official JavaScript library designed to seamlessly integrate with Dozer.
 
-The solution is Dozer JS. it's an official JS library to work seamlessly with Dozer.
-
-You can install Dozer JS by running follwing command:
+To install Dozer JS, simply run the following command:
 
 ```bash
 npm i @getdozer/dozerjs
