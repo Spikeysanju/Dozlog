@@ -212,7 +212,30 @@ Sources are used to establish a connection between tables and databases. They al
 To define sources in `Dozer`, follow these steps:
 
 ```dozer-config.yaml
+sources:
+  - name: product
+    table_name: product
+    connection: !Ref stic_conn
+    columns:
+      # - name
 
+  - name: cart
+    table_name: cart
+    connection: !Ref stic_conn
+    columns:
+      # - name
+
+  - name: profile
+    table_name: profile
+    connection: !Ref stic_conn
+    columns:
+      # - name
+
+  - name: order
+    table_name: order
+    connection: !Ref stic_conn
+    columns:
+      # - name
 ```
 
 ### ⛳ Endpoints
@@ -542,3 +565,4 @@ The above example demonstrates different filter operators:
 - $matches_all (Array matches all)
 
 You can use these filter operators to customize your query and retrieve specific records based on the defined conditions.
+
