@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS cart (
 
 CREATE TABLE orders (
     id VARCHAR(255) PRIMARY KEY,
-    "userId VARCHAR(255) NOT NULL,
+    "userId" VARCHAR(255) NOT NULL,
     "productId" VARCHAR(255) NOT NULL,
     quantity INT NOT NULL,
     "totalPrice" INT NOT NULL,
