@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS cart (
     "updatedAt" TIMESTAMP NOT NULL
 );
 
-CREATE TABLE orders (
+CREATE TABLE order (
     id VARCHAR(255) PRIMARY KEY,
     "userId" VARCHAR(255) NOT NULL,
     "productId" VARCHAR(255) NOT NULL,
