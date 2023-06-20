@@ -29,8 +29,6 @@ sql: |
     INTO order_count
     FROM "order";
 
-  SELECT * FROM into allproducts "product";
-
 sources:
   - name: product
     table_name: product
@@ -80,7 +78,3 @@ endpoints:
   - name: order_count
     path: /order_count
     table_name: order_count
-
-  - name: allproducts
-    path: /all_products
-    table_name: all_products
