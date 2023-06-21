@@ -1,6 +1,4 @@
-!add different hook about problem statement
-
-Building powerful data apps typically requires an extensive amount of time, careful planning, and integration of multiple tools. In our organization, we had the need to create an admin dashboard for tracking statistics related to our product.
+In the world of data app development, building powerful applications can be a time-consuming and complex task. However, In our organization, we had the need to create an admin dashboard for tracking statistics related to one of our product.
 
 Initially, we considered building the dashboard from scratch, but we had specific requirements in mind:
 
@@ -12,10 +10,24 @@ Initially, we considered building the dashboard from scratch, but we had specifi
 We explored various tech stacks to find the right solution, and then we came across Dozer. This caught our attention after hearing positive discussions about it on Hackernews. Intrigued, we decided to give it a try, and the results were impressive. To provide a practical demonstration, we created a mini e-commerce app with an admin panel using Dozer.
 
 ## 📺 Demo
+Dozer Commerce is a simple ecommerce application that demonstrates a real-time admin dashboard. It uses Postgres and the Dozer js library, and is developed with SvelteKit. This application shows you how to create your own real-time admin dashboard using Dozer and Sveltekit.
+
 Demo of Dozlog – powered by Dozer
 -> url goes here
 
-!one diagram about dozlog – explains about flows, data flow, fetching -> reference abishek's blog
+
+## ⁉️ Dozer commerce architecture
+The architecture of Dozer Commerce is straightforward. It involves a single yaml file to configure the Dozer configuration and uses the Dozer js library to work with any Javascript framework. In our case, we are using SvelteKit.
+
+![Dozer commerce app – Architecture](image.png)
+
+In the above diagram, Dozer is connected to a Postgres instance with the Dozer configuration. Dozer can communicate with Postgres for any database operations. For example, if any values are changed in the database, Dozer can easily detect this using the Change Data Capture mechanism to trigger events. These events are then listened to via stream with the help of the Dozer js library. On the frontend, you can retrieve real-time values.
+This sample application has 4 important pages:
+
+1. Login page
+2. All products page ("/")
+3. Cart page ("/cart")
+4. Admin page ("/admin")
 
 ## ⚡ What's Dozer?
 
@@ -288,7 +300,7 @@ Now we have successfully setup our Dozer configuration in yaml file. In order to
 dozer -c dozer-config.yaml
 ```
 
-![[Pasted image 20230616005701.png]]
+![Dozer running on terminal](image-1.png)
 Once Dozer is running, you will be able to observe the timestamps indicating the duration it took to load each endpoint. This will help you track the performance and response time of each endpoint.
 
 ### 🌀 Curl request
