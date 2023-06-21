@@ -10,13 +10,13 @@ Initially, we considered building the dashboard from scratch, but we had specifi
 We explored various tech stacks to find the right solution, and then we came across Dozer. This caught our attention after hearing positive discussions about it on Hackernews. Intrigued, we decided to give it a try, and the results were impressive. To provide a practical demonstration, we created a mini e-commerce app with an admin panel using Dozer.
 
 ## 📺 Demo
+
 Dozer Commerce is a simple ecommerce application that demonstrates a real-time admin dashboard. It uses Postgres and the Dozer js library, and is developed with SvelteKit. This application shows you how to create your own real-time admin dashboard using Dozer and Sveltekit.
 
-Demo of Dozlog – powered by Dozer
--> url goes here
-
+Demo video of Dozlog – powered by Dozer
 
 ## ⁉️ Dozer commerce architecture
+
 The architecture of Dozer Commerce is straightforward. It involves a single yaml file to configure the Dozer configuration and uses the Dozer js library to work with any Javascript framework. In our case, we are using SvelteKit.
 
 ![Dozer commerce app – Architecture](image.png)
@@ -24,30 +24,30 @@ The architecture of Dozer Commerce is straightforward. It involves a single yaml
 In the above diagram, Dozer is connected to a Postgres instance with the Dozer configuration. Dozer can communicate with Postgres for any database operations. For example, if any values are changed in the database, Dozer can easily detect this using the Change Data Capture mechanism to trigger events. These events are then listened to via stream with the help of the Dozer js library. On the frontend, you can retrieve real-time values.
 This sample application has 4 important pages:
 
-1. Login page
-2. All products page ("/")
-3. Cart page ("/cart")
-4. Admin page ("/admin")
+1. Login page: Allows users to log in to access the products and place orders.
+2. All products page (`"/"`): Displays all the available products for users to browse and purchase.
+3. Cart page (`"/cart"`): Shows the user's shopping cart where they can view and manage the items they have added.
+4. Admin page (`"/admin"`): Provides real-time tracking of orders, carts, and users, allowing administrators to monitor and manage these activities.
+
 
 ## ⚡ What's Dozer?
 
-Dozer is a solution that simplifies the handling of fragmented data. It offers a unified API layer that consolidates data from multiple sources, making it easier to access and integrate. By doing so, Dozer reduces the burden on operational databases, resulting in improved efficiency. 
+Dozer is a solution that simplifies the handling of fragmented data. It offers a unified API layer that consolidates data from multiple sources, making it easier to access and integrate. By doing so, Dozer reduces the burden on operational databases, resulting in improved efficiency.
 
 Moreover, with just a single YAML configuration, you can effortlessly communicate with your Postgres database, perform aggregation queries, create REST API endpoints, and execute filter queries. It streamlines the entire process and provides a seamless experience for data handling and integration.
 
 👀 Take a look at the below image.
 
-![[SCR-20230608-mdll.png]]
+![Dozer configuration](SCR-20230608-mdll.png)
 
 Creating real-time data apps is as simple as configuring a single `YAML` file. With this straightforward setup, you can easily develop applications that display data in real-time. The simplicity of the process allows you to focus on building the functionalities and features you need, without getting overwhelmed by complex configurations.
 
-
 ## 🤔 Why Dozer?
 
-- Simplifying Complex Problems: Dozer offers a straightforward solution to tackle complex problems.
-- Streamlining Database Connections and Change Tracking: Dozer simplifies the process of connecting databases and tracking changes.
-- Efficient Database Management: Dozer makes it easier to manage and work with database systems efficiently.
-- Real-time Tracking: Dozer keeps you updated with real-time changes happening in your database.
+- **Simplifying Complex Problems:** Dozer offers a straightforward solution to tackle complex problems.
+- **Streamlining Database Connections and Change Tracking:** Dozer simplifies the process of connecting databases and tracking changes.
+- **Efficient Database Management:** Dozer makes it easier to manage and work with database systems efficiently.
+- **Real-time Tracking:** Dozer keeps you updated with real-time changes happening in your database.
 
 Okay, now lets build a quick e-commerce app with SvelteKit & Dozer.
 
@@ -57,13 +57,13 @@ To start using Dozer, you will need to install the Dozer client on your computer
 
 - Installation process:
 
-   Execute the following command:
-   
-   ```bash
-   Dozer version command
-   ```
-   
-   This command will verify if the Dozer client has been successfully installed on your computer. Once installed, proceed to set up the database and configure the Dozer YAML file.
+  Execute the following command:
+
+  ```bash
+  Dozer version command
+  ```
+
+  This command will verify if the Dozer client has been successfully installed on your computer. Once installed, proceed to set up the database and configure the Dozer YAML file.
 
 ## 💻 Configuring the Dozer YAML file
 
@@ -449,10 +449,10 @@ Dozer provides powerful and flexible ways to perform queries with dynamic filter
 
 The following filters are supported by Dozer:
 
-1. OrderBy: Sort the query results in ascending or descending order based on specified criteria.
-2. Limit: Restrict the number of responses returned by the query.
-3. Skip: Skip a specified number of initial rows in the result set.
-4. Filter: Apply advanced filtering conditions to customize query results.
+1. **OrderBy**: Sort the query results in ascending or descending order based on specified criteria.
+2. **Limit**: Restrict the number of responses returned by the query.
+3. **Skip**: Skip a specified number of initial rows in the result set.
+4. **Filter**: Apply advanced filtering conditions to customize query results.
 
 Let's explore a few example scenarios to better understand the capabilities of Dozer's filters.
 
@@ -581,11 +581,8 @@ The above example demonstrates different filter operators:
 
 You can use these filter operators to customize your query and retrieve specific records based on the defined conditions.
 
-
 ## Additional project
-upcoming lamba function usecase. 
+
+upcoming lamba function usecase.
 
 ## Dozer references to learn more about
-
-
-
