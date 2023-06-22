@@ -15,10 +15,14 @@
 	onMount(async () => {
 		// init dozer client
 		const dozer = new ApiClient('product');
-		dozer.query().then(([fields, records]) => {
-			productState.records = records;
-			productState.fields = fields;
-		});
+		dozer
+			.query({
+				limit: 1000
+			})
+			.then(([fields, records]) => {
+				productState.records = records;
+				productState.fields = fields;
+			});
 
 		// init dozer client
 		dozer.getFields().then((fieldsResponse) => {
