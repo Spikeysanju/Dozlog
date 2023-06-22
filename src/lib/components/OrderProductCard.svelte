@@ -3,14 +3,7 @@
 	import { convertISOTimestamp } from '$lib/utils/utils';
 	import { onMount } from 'svelte';
 
-	// export let name: string;
-	// export let description: string;
-	// export let price: string;
-	// export let image: string;
-	// export let timestamp: string;
-	// export let userId: string;
 	export let ids: string[];
-
 	let product: Product[];
 
 	onMount(async () => {
@@ -23,8 +16,6 @@
 				ids: ids
 			})
 		}).then((res) => res.json());
-
-		console.log(data);
 
 		product = data;
 	});

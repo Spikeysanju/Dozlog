@@ -187,7 +187,7 @@
 	});
 
 	async function handleCheckout() {
-		await fetch('/api/checkout', {
+		await fetch('/api/cart/checkout', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
@@ -212,7 +212,7 @@
 	// delete all cart items after checkout
 	async function handleDeleteAllCartItems() {
 		console.log('Deleting all cart items');
-		await fetch('/api/cart', {
+		await fetch('/api/cart/delete', {
 			method: 'DELETE'
 		})
 			.then((res) => res.json())
