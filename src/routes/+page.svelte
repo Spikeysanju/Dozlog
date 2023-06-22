@@ -89,7 +89,7 @@
 	export let data;
 </script>
 
-<div class="w-full items-start justify-center flex flex-col h-screen">
+<div class="w-full items-start justify-center flex flex-col min-h-screen">
 	<h1 class="text-2xl font-bold text-gray-900 w-full text-start">
 		Welcome back, {data.currentUser.name}
 	</h1>

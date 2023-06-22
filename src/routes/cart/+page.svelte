@@ -264,7 +264,7 @@
 			</div>
 
 			{#if subtotalPrice > 0}
-				<div id="card-value" class="col-span-2 sm:col-span-1 bg-gray-50 h-screen">
+				<div id="card-value" class="col-span-2 sm:col-span-1 bg-gray-50 h-auto">
 					<section
 						aria-labelledby="summary-heading"
 						class="mt-16 rounded-lg bg-gray-50 px-4 py-6 sm:p-6 lg:col-span-5 lg:mt-0 lg:p-8"

@@ -373,7 +373,7 @@
 	});
 </script>
 
-<div class="flex flex-col w-full items-center justify-center">
+<div class="flex flex-col items-center justify-center w-full">
 	<h1 class="text-2xl font-bold text-gray-900 text-start w-full">Realtime Activities</h1>
 	<div class="flex flex-col items-start justify-start w-full overflow-auto">
 		<div
@@ -397,7 +397,7 @@
 			{#if state.records.length === 0}
 				<EmptyState title="No cart record found" description="Add new cart to see the activities" />
 			{:else}
-				<div class="w-full flex flex-col gap-3">
+				<div class="mt-6 w-full flex flex-col gap-3">
 					{#each state.records as item}
 						<NewCartCard
 							cartId={item.id}
