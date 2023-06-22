@@ -96,13 +96,36 @@ CREATE TABLE order (
 
 --To add dummy products to database you can run
 
-INSERT INTO product (id, name, description, price, image, "createdAt", "updatedAt")
-VALUES
-    ('1', 'Product 1', 'Description for Product 1', 10, 'https://images.pexels.com/photos/1464625/pexels-photo-1464625.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1', '2021-01-01 10:00:00', '2021-01-01 10:00:00'),
-    ('2', 'Product 2', 'Description for Product 2', 20, 'https://images.pexels.com/photos/1879096/pexels-photo-1879096.jpeg?auto=compress&cs=tinysrgb&w=1600', '2021-01-02 11:00:00', '2021-01-02 11:00:00'),
-    ('3', 'Product 3', 'Description for Product 3', 30, 'https://images.pexels.com/photos/1879101/pexels-photo-1879101.jpeg?auto=compress&cs=tinysrgb&w=1600', '2021-01-03 12:00:00', '2021-01-03 12:00:00'),
-    ('4', 'Product 4', 'Description for Product 4', 40, 'https://images.pexels.com/photos/4296072/pexels-photo-4296072.jpeg?auto=compress&cs=tinysrgb&w=1600', '2021-01-04 13:00:00', '2021-01-04 13:00:00'),
-    ('5', 'Product 5', 'Description for Product 5', 50, 'https://images.pexels.com/photos/4296075/pexels-photo-4296075.jpeg?auto=compress&cs=tinysrgb&w=1600', '2021-01-05 14:00:00', '2021-01-05 14:00:00');
+CREATE OR REPLACE FUNCTION insert_1000_products()
+  RETURNS VOID AS
+$$
+DECLARE
+  i INT;
+BEGIN
+  FOR i IN 1..1000 LOOP
+    INSERT INTO product (id, name, description, price, image, "createdAt", "updatedAt")
+    VALUES (
+      md5(random()::text || clock_timestamp()::text)::uuid,
+      'Product ' || i,
+      'Description for Product ' || i,
+      floor(random() * 100 + 1),
+      CASE (i % 5)
+        WHEN 1 THEN 'https://images.pexels.com/photos/1464625/pexels-photo-1464625.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
+        WHEN 2 THEN 'https://images.pexels.com/photos/1879096/pexels-photo-1879096.jpeg?auto=compress&cs=tinysrgb&w=1600'
+        WHEN 3 THEN 'https://images.pexels.com/photos/1879101/pexels-photo-1879101.jpeg?auto=compress&cs=tinysrgb&w=1600'
+        WHEN 4 THEN 'https://images.pexels.com/photos/4296072/pexels-photo-4296072.jpeg?auto=compress&cs=tinysrgb&w=1600'
+        WHEN 0 THEN 'https://images.pexels.com/photos/4296075/pexels-photo-4296075.jpeg?auto=compress&cs=tinysrgb&w=1600'
+      END,
+      clock_timestamp(),
+      clock_timestamp()
+    );
+  END LOOP;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- call this function to insert 1000 products in DB
+SELECT insert_1000_products();
 ```
 
 3. After successfully running the query, you will be able to see the tables in your database.
