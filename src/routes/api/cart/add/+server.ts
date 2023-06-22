@@ -3,7 +3,7 @@ import type { RequestHandler } from './$types';
 import { db } from '$lib/db/db';
 import { nanoid } from 'nanoid';
 
-export const GET: RequestHandler = async ({ locals, request }) => {
+export const POST: RequestHandler = async ({ locals, request }) => {
 	const session = await locals.getSession();
 
 	const { productId, quantity } = await request.json();
@@ -45,6 +45,10 @@ export const GET: RequestHandler = async ({ locals, request }) => {
 		.returning('id')
 		.executeTakeFirstOrThrow();
 
-	console.log('server form', data);
-	return new Response();
+	return new Response(JSON.stringify(data), {
+		status: 200,
+		headers: {
+			'Content-Type': 'application/json'
+		}
+	});
 };

@@ -4,14 +4,12 @@
 	import { RecordMapper } from '@dozerjs/dozer/lib/cjs/helper';
 	import { OperationType } from '@dozerjs/dozer/lib/cjs/generated/protos/types_pb.js';
 	import NewUserCard from '$lib/components/NewUserCard.svelte';
-	import { className, clsx, convertISOTimestamp } from '$lib/utils/utils';
+	import { className } from '$lib/utils/utils';
 	import NewOrderCard from '$lib/components/NewOrderCard.svelte';
 	import NewCartCard from '$lib/components/NewCartCard.svelte';
 	import Stats from '$lib/components/Stats.svelte';
+	import EmptyState from '$lib/components/EmptyState.svelte';
 
-	let results: any = null;
-	let records: any = [];
-	let fields: any = [];
 	let state: any = {
 		records: [],
 		fields: []
@@ -48,17 +46,6 @@
 	};
 
 	let activeTab = 'analytics';
-	let endpoint = 'user';
-
-	// when active tab is changed if users then endpoint is user else if it's cart then endpoint is cart else if it's orders then endpoint is orders else analytics
-	$: endpoint =
-		activeTab === 'users'
-			? 'profile'
-			: activeTab === 'cart'
-			? 'cart'
-			: activeTab === 'orders'
-			? 'orders'
-			: 'user';
 
 	const menu = [
 		{
@@ -75,6 +62,7 @@
 		}
 	];
 
+	// cart
 	onMount(async () => {
 		// init dozer client
 		const client = new ApiClient('cart');
@@ -150,6 +138,7 @@
 		});
 	});
 
+	// profile
 	onMount(async () => {
 		// init dozer client
 		const client = new ApiClient('profile');
@@ -210,6 +199,7 @@
 		});
 	});
 
+	// order
 	onMount(async () => {
 		// init dozer client
 		const client = new ApiClient('order');
@@ -265,6 +255,7 @@
 		});
 	});
 
+	// cart count
 	onMount(async () => {
 		// init dozer client
 		const client = new ApiClient('cart_count');
@@ -319,6 +310,7 @@
 		});
 	});
 
+	// order count
 	onMount(async () => {
 		// init dozer client
 		const client = new ApiClient('order_count');
@@ -381,7 +373,7 @@
 	});
 </script>
 
-<div class="flex flex-col w-full items-center justify-center">
+<div class="flex flex-col items-center justify-center w-full">
 	<h1 class="text-2xl font-bold text-gray-900 text-start w-full">Realtime Activities</h1>
 	<div class="flex flex-col items-start justify-start w-full overflow-auto">
 		<div
@@ -403,21 +395,23 @@
 
 		{#if activeTab === 'cart'}
 			{#if state.records.length === 0}
-				<p>No cart items found</p>
+				<EmptyState title="No cart record found" description="Add new cart to see the activities" />
 			{:else}
-				{#each state.records as item}
-					<NewCartCard
-						cartId={item.id}
-						productId={item.productId}
-						quantity={item.quantity}
-						orderedBy={item.userId}
-						timestamp={item.createdAt}
-					/>
-				{/each}
+				<div class="mt-6 w-full flex flex-col gap-3">
+					{#each state.records as item}
+						<NewCartCard
+							cartId={item.id}
+							productId={item.productId}
+							quantity={item.quantity}
+							orderedBy={item.userId}
+							timestamp={item.createdAt}
+						/>
+					{/each}
+				</div>
 			{/if}
 		{:else if activeTab === 'users'}
 			{#if userState.records.length === 0}
-				<p>No users record found</p>
+				<EmptyState title="No user record found" description="Add new user to see the activities" />
 			{:else}
 				<div class="mt-6 w-full flex">
 					{#each userState.records as item}
@@ -425,16 +419,19 @@
 							username={item.name}
 							email={item.email}
 							userId={item.id}
-							timestamp={'12th june'}
+							image={item.image}
 						/>
 					{/each}
 				</div>
 			{/if}
 		{:else if activeTab === 'orders'}
 			{#if ordersState.records.length === 0}
-				<p>No orders found</p>
+				<EmptyState
+					title="No order record found"
+					description="Add new order to see the activities"
+				/>
 			{:else}
-				<div class="mt-6 w-full flex flex-col gap-6">
+				<div class="mt-6 w-full flex flex-col gap-3">
 					{#each ordersState.records as item}
 						<NewOrderCard
 							orderId={item.id}
@@ -448,99 +445,101 @@
 			{/if}
 		{:else if activeTab === 'analytics'}
 			<div class="mt-6 w-full flex flex-col gap-6">
-				<!-- [ { "total_price": 198, "total_quantity": 6, "unique_users_count": 6, "avg_order_per_user": 1 } ] -->
-				<!-- [ { "total_cart_value": 20, "shipping_est": 5.32, "tax_est": 9.45, "total_cart_value_with_tax": 33.32, "total_items": 1 } ] -->
+				{#if orderCountState.records.length}
+					<div id="order-stats" class="space-y-3">
+						<h2 class="text-xl font-bold text-gray-900 py-3">Order stats</h2>
 
-				<div id="order-stats" class="space-y-3">
-					<h2 class="text-xl font-bold text-gray-900 py-3">Order stats</h2>
+						<div class="grid grid-cols-5 w-full gap-3">
+							{#each orderCountState.records as item}
+								<div class="col-span-5 sm:col-span-3">
+									<Stats
+										title="Total Orders value"
+										value={`$${item.total_price.toFixed(2)}`}
+										stats={`$${(item.total_price / item.unique_users_count).toFixed(
+											2
+										)} avg order per user`}
+									/>
+								</div>
 
-					<div class="grid grid-cols-5 w-full gap-3">
+								<div class="col-span-5 sm:col-span-2">
+									<Stats
+										title="Total Orders"
+										value={`${item.total_quantity.toFixed(2)}`}
+										stats={`${item.avg_order_per_user.toFixed(2)} avg order per user`}
+									/>
+								</div>
+
+								<div class="col-span-5 sm:col-span-5">
+									<Stats
+										title="Cancellations"
+										value={`${item.total_quantity.toFixed(2)}`}
+										stats={`${item.avg_order_per_user.toFixed(2)} avg order per user`}
+									/>
+								</div>
+							{/each}
+						</div>
+					</div>
+				{/if}
+
+				{#if cartCountState.records.length}
+					<div id="cart-stats" class="space-y-3">
+						<h2 class="text-xl font-bold text-gray-900 py-3">Cart stats</h2>
+						<div class="grid grid-cols-5 w-full gap-3">
+							{#each cartCountState.records as item}
+								<div class="col-span-5 sm:col-span-3">
+									<Stats
+										title="Total Cart value"
+										value={`$${item.total_cart_value.toFixed(2)}`}
+										stats="without tax and shipping"
+									/>
+								</div>
+
+								<div class="col-span-5 sm:col-span-2">
+									<Stats
+										title="Total Cart items"
+										value={`${item.total_items.toFixed(2)}`}
+										stats="across all users"
+									/>
+								</div>
+
+								<div class="col-span-5 sm:col-span-2">
+									<Stats
+										title="Total Shipping fee"
+										value={`${item.total_shipping.toFixed(2)}`}
+										stats="$5.32 per user cart"
+									/>
+								</div>
+
+								<div class="col-span-5 sm:col-span-2">
+									<Stats
+										title="Total Tax fee"
+										value={`${item.total_tax.toFixed(2)}`}
+										stats="$9.45 per user cart"
+									/>
+								</div>
+							{/each}
+						</div>
+					</div>
+				{/if}
+
+				{#if orderCountState.records.length}
+					<div id="user-stats" class="space-y-3">
+						<h2 class="text-xl font-bold text-gray-900 py-3">User stats</h2>
 						{#each orderCountState.records as item}
-							<div class="col-span-5 sm:col-span-3">
-								<Stats
-									title="Total Orders value"
-									value={`$${item.total_price.toFixed(2)}`}
-									stats={`$${(item.total_price / item.unique_users_count).toFixed(
-										2
-									)} avg order per user`}
-								/>
-							</div>
+							<Stats
+								title="Total Users"
+								value={`${item.unique_users_count.toFixed(2)}`}
+								stats={`${item.avg_order_per_user.toFixed(2)} avg order per user`}
+							/>
 
-							<div class="col-span-5 sm:col-span-2">
-								<Stats
-									title="Total Orders"
-									value={`${item.total_quantity.toFixed(2)}`}
-									stats={`${item.avg_order_per_user.toFixed(2)} avg order per user`}
-								/>
-							</div>
-
-							<div class="col-span-5 sm:col-span-5">
-								<Stats
-									title="Cancellations"
-									value={`${item.total_quantity.toFixed(2)}`}
-									stats={`${item.avg_order_per_user.toFixed(2)} avg order per user`}
-								/>
-							</div>
+							<Stats
+								title="Avg Users"
+								value={`${item.unique_users_count.toFixed(2)}`}
+								stats={`${item.avg_order_per_user.toFixed(2)} avg order per user`}
+							/>
 						{/each}
 					</div>
-				</div>
-
-				<div id="cart-stats" class="space-y-3">
-					<h2 class="text-xl font-bold text-gray-900 py-3">Cart stats</h2>
-
-					<div class="grid grid-cols-5 w-full gap-3">
-						{#each cartCountState.records as item}
-							<div class="col-span-5 sm:col-span-3">
-								<Stats
-									title="Total Cart value"
-									value={`$${item.total_cart_value.toFixed(2)}`}
-									stats="without tax and shipping"
-								/>
-							</div>
-
-							<div class="col-span-5 sm:col-span-2">
-								<Stats
-									title="Total Cart items"
-									value={`${item.total_items.toFixed(2)}`}
-									stats="across all users"
-								/>
-							</div>
-
-							<div class="col-span-5 sm:col-span-2">
-								<Stats
-									title="Total Shipping fee"
-									value={`${item.total_shipping.toFixed(2)}`}
-									stats="$5.32 per user cart"
-								/>
-							</div>
-
-							<div class="col-span-5 sm:col-span-2">
-								<Stats
-									title="Total Tax fee"
-									value={`${item.total_tax.toFixed(2)}`}
-									stats="$9.45 per user cart"
-								/>
-							</div>
-						{/each}
-					</div>
-				</div>
-
-				<div id="user-stats" class="space-y-3">
-					<h2 class="text-xl font-bold text-gray-900 py-3">User stats</h2>
-					{#each orderCountState.records as item}
-						<Stats
-							title="Total Users"
-							value={`${item.unique_users_count.toFixed(2)}`}
-							stats={`${item.avg_order_per_user.toFixed(2)} avg order per user`}
-						/>
-
-						<Stats
-							title="Avg Users"
-							value={`${item.unique_users_count.toFixed(2)}`}
-							stats={`${item.avg_order_per_user.toFixed(2)} avg order per user`}
-						/>
-					{/each}
-				</div>
+				{/if}
 			</div>
 		{/if}
 	</div>

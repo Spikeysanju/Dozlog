@@ -26,55 +26,55 @@ export const load = async ({ locals }) => {
 	};
 };
 
-export const actions = {
-	addToCart: async ({ request, locals, url }) => {
-		const session = await locals.getSession();
-		const formData = await request.formData();
-		const productId = formData.get('productId') as string;
-		const quantity = formData.get('quantity') as string;
+// export const actions = {
+// 	addToCart: async ({ request, locals, url }) => {
+// 		const session = await locals.getSession();
+// 		const formData = await request.formData();
+// 		const productId = formData.get('productId') as string;
+// 		const quantity = formData.get('quantity') as string;
 
-		if (!session) {
-			throw redirect(303, '/auth/signin?csrf=true');
-		}
+// 		if (!session) {
+// 			throw redirect(303, '/auth/signin?csrf=true');
+// 		}
 
-		const user = await db
-			.selectFrom('profile')
-			.selectAll()
-			.where('email', '=', session.user?.email as string)
-			.executeTakeFirstOrThrow();
+// 		const user = await db
+// 			.selectFrom('profile')
+// 			.selectAll()
+// 			.where('email', '=', session.user?.email as string)
+// 			.executeTakeFirstOrThrow();
 
-		// Convenient validation check:
-		if (!productId) {
-			// Again, always return { form } and things will just work.
-			return fail(400, { message: 'Missing productId' });
-		}
+// 		// Convenient validation check:
+// 		if (!productId) {
+// 			// Again, always return { form } and things will just work.
+// 			return fail(400, { message: 'Missing productId' });
+// 		}
 
-		if (!quantity) {
-			// Again, always return { form } and things will just work.
-			return fail(400, { message: 'Missing quantity' });
-		}
+// 		if (!quantity) {
+// 			// Again, always return { form } and things will just work.
+// 			return fail(400, { message: 'Missing quantity' });
+// 		}
 
-		console.log('server form', productId, quantity, user.id);
+// 		console.log('server form', productId, quantity, user.id);
 
-		// add item to cart
-		const data = await db
-			.insertInto('cart')
-			.values({
-				productId: productId,
-				quantity: parseInt(quantity),
-				userId: user.id,
-				createdAt: new Date().toDateString(),
-				updatedAt: new Date().toDateString(),
-				id: nanoid(12)
-			})
-			.returning('id')
-			.executeTakeFirstOrThrow();
+// 		// add item to cart
+// 		const data = await db
+// 			.insertInto('cart')
+// 			.values({
+// 				productId: productId,
+// 				quantity: parseInt(quantity),
+// 				userId: user.id,
+// 				createdAt: new Date().toDateString(),
+// 				updatedAt: new Date().toDateString(),
+// 				id: nanoid(12)
+// 			})
+// 			.returning('id')
+// 			.executeTakeFirstOrThrow();
 
-		console.log('server form', data);
+// 		console.log('server form', data);
 
-		return {
-			status: 201,
-			message: 'Added to cart'
-		};
-	}
-};
+// 		return {
+// 			status: 201,
+// 			message: 'Added to cart'
+// 		};
+// 	}
+// };

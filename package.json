@@ -48,6 +48,7 @@
 		"nanoid": "^4.0.2",
 		"pg": "^8.10.0",
 		"pg-promise": "^11.4.3",
+		"svelte-french-toast": "^1.0.4-beta.0",
 		"svelte-legos": "^0.2.1"
 	}
 }
