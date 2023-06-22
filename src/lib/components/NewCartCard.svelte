@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { convertUnixTimestamp } from '$lib/utils/utils';
+
 	export let cartId: string;
 	export let productId: string;
 	export let quantity: string;
@@ -7,34 +9,30 @@
 </script>
 
 <div
-	class="flex flex-col w-full gap-3 items-center justify-center max-w-lg p-6 border border-r-gray-100 rounded-md bg-white"
+	class="flex flex-col w-full gap-3 items-center justify-center p-6 border border-r-gray-100 rounded-md bg-white"
 >
 	<div class="flex w-full items-center justify-between flex-row">
 		<div>
-			<h5 class="font-medium text-gray-950 text-base">Cart Id</h5>
+			<h5 class="font-medium text-gray-950 text-sm">Cart Id</h5>
 			<p class="text-sm text-gray-500">{cartId}</p>
 		</div>
 
 		<div>
-			<h5 class="font-medium text-gray-950 text-base">Cart added</h5>
-			<p class="text-sm text-gray-500">{timestamp}</p>
+			<h5 class="font-medium text-gray-950 text-sm">Created at</h5>
+			<p class="text-sm text-gray-500">{convertUnixTimestamp(timestamp)}</p>
 		</div>
 
 		<div>
-			<h5 class="font-medium text-gray-950 text-base">Quantity</h5>
-			<p class="text-sm text-gray-500">{quantity}</p>
+			<h5 class="font-medium text-gray-950 text-sm">Quantity</h5>
+			<p class="text-sm text-gray-500 text-end">{quantity}</p>
 		</div>
 	</div>
 
 	<slot />
 
 	<div class="flex w-full items-center justify-between flex-row">
-		<p class="text-gray-500 text-sm">Estimated delivery date July 12, 2023</p>
-
-		<button class="text-pink-500 font-medium text-sm"> Buy again </button>
-	</div>
-
-	<div class="w-full">
 		<p class="text-500 text-sm text-start w-full">User Id:{orderedBy}</p>
+
+		<button class="text-pink-500 font-medium text-sm w-full text-end"> Buy again </button>
 	</div>
 </div>

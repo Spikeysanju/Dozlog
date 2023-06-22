@@ -8,6 +8,7 @@
 	import NewOrderCard from '$lib/components/NewOrderCard.svelte';
 	import NewCartCard from '$lib/components/NewCartCard.svelte';
 	import Stats from '$lib/components/Stats.svelte';
+	import EmptyState from '$lib/components/EmptyState.svelte';
 
 	let state: any = {
 		records: [],
@@ -394,21 +395,23 @@
 
 		{#if activeTab === 'cart'}
 			{#if state.records.length === 0}
-				<p>No cart items found</p>
+				<EmptyState title="No cart record found" description="Add new cart to see the activities" />
 			{:else}
-				{#each state.records as item}
-					<NewCartCard
-						cartId={item.id}
-						productId={item.productId}
-						quantity={item.quantity}
-						orderedBy={item.userId}
-						timestamp={item.createdAt}
-					/>
-				{/each}
+				<div class="w-full flex flex-col gap-3">
+					{#each state.records as item}
+						<NewCartCard
+							cartId={item.id}
+							productId={item.productId}
+							quantity={item.quantity}
+							orderedBy={item.userId}
+							timestamp={item.createdAt}
+						/>
+					{/each}
+				</div>
 			{/if}
 		{:else if activeTab === 'users'}
 			{#if userState.records.length === 0}
-				<p>No users record found</p>
+				<EmptyState title="No user record found" description="Add new user to see the activities" />
 			{:else}
 				<div class="mt-6 w-full flex">
 					{#each userState.records as item}
@@ -416,14 +419,17 @@
 							username={item.name}
 							email={item.email}
 							userId={item.id}
-							timestamp={'12th june'}
+							image={item.image}
 						/>
 					{/each}
 				</div>
 			{/if}
 		{:else if activeTab === 'orders'}
 			{#if ordersState.records.length === 0}
-				<p>No orders found</p>
+				<EmptyState
+					title="No order record found"
+					description="Add new order to see the activities"
+				/>
 			{:else}
 				<div class="mt-6 w-full flex flex-col gap-6">
 					{#each ordersState.records as item}
