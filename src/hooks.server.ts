@@ -47,6 +47,6 @@ export const handle = SvelteKitAuth({
 		},
 		session(message) {
 			console.log('👮‍♂️ User', message);
-		},
+		}
 	}
 }) satisfies Handle;
