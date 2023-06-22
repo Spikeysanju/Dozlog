@@ -26,10 +26,7 @@
 	$: path = $page.url.pathname;
 </script>
 
-<div
-	class="mx-auto px-3 sm:px-6 lg:px-8 flex flex-col space-y-6 max-w-5xl"
-	data-sveltekit-preload-data="hover"
->
+<div class="mx-auto px-3 sm:px-6 lg:px-8 flex flex-col space-y-6 max-w-5xl">
 	<Toaster />
 	{#if !$networkState.isOnline}
 		<OfflineBanner />
