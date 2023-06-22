@@ -431,7 +431,7 @@
 					description="Add new order to see the activities"
 				/>
 			{:else}
-				<div class="mt-6 w-full flex flex-col gap-6">
+				<div class="mt-6 w-full flex flex-col gap-3">
 					{#each ordersState.records as item}
 						<NewOrderCard
 							orderId={item.id}

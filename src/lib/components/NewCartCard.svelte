@@ -33,6 +33,6 @@
 	<div class="flex w-full items-center justify-between flex-row">
 		<p class="text-500 text-sm text-start w-full">User Id:{orderedBy}</p>
 
-		<button class="text-pink-500 font-medium text-sm w-full text-end"> Buy again </button>
+		<button class="text-pink-500 font-medium text-sm w-full text-end"> Mark out of stock</button>
 	</div>
 </div>

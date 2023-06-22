@@ -89,10 +89,12 @@
 	export let data;
 </script>
 
-<div>
-	<h1 class="text-2xl font-bold text-gray-900">Welcome back, {data.currentUser.name}</h1>
+<div class="w-full items-start justify-center flex flex-col h-screen">
+	<h1 class="text-2xl font-bold text-gray-900 w-full text-start">
+		Welcome back, {data.currentUser.name}
+	</h1>
 
-	<h2 class="text-xl font-bold text-gray-900 py-3">Recommeded Products</h2>
+	<h2 class="text-xl font-bold text-gray-900 py-3 w-full text-start">Recommeded Products</h2>
 
 	{#if productState.records.length}
 		<div class="mt-8 grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
